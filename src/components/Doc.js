@@ -10,6 +10,9 @@ export default class DocumentView extends Component {
 
         return (
             <View style={styles.mainView}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
+                    <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/32/back.png')} /></TouchableWithoutFeedback>
+                </View>
                 <View style={{flex: 12}}>
                     <PDF
                         source={{uri: this.props.docuri}}
@@ -31,9 +34,7 @@ export default class DocumentView extends Component {
                         style={styles.pdf}>
                     </PDF> */}
                 </View>
-                <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-                    <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/back.png')} /></TouchableWithoutFeedback>
-                </View>
+                
             </View>
 
         );
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
         marginRight: 15,
     },
     pdf: {
-        flex: 1,
-        width: Dimensions.get('window').width,
+        width: '100%',
+        height: '100%',
     }
 });

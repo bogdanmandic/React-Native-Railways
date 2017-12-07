@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import Video from 'react-native-video';
 import { Actions } from 'react-native-router-flux';
 
@@ -9,6 +9,10 @@ export default class VideoView extends Component {
 
         return (
             <View style={styles.mainView}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems:'flex-start'}}>
+                    <TouchableOpacity onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/32/back.png')} /></TouchableOpacity>
+                </View>
+
                 <View style={{ flex: 12 }}>
                 <Video source={{ uri: this.props.videouri }}   // Can be a URL or a local file.
                             // Store reference
@@ -29,11 +33,9 @@ export default class VideoView extends Component {
                             onError={this.videoError}               // Callback when video cannot be loaded
                             onBuffer={this.onBuffer}                // Callback when remote video is buffering
                             onTimedMetadata={this.onTimedMetadata}  // Callback when the stream receive some metadata
-                            style={{ width: 300, height: 300 }} />
+                            style={{ width: '100%', height: '100%' }} />
                 </View>
-                <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-                    <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/back.png')} /></TouchableWithoutFeedback>
-                </View>
+              
             </View>
 
         );
