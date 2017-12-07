@@ -165,6 +165,7 @@ export default class App extends Component {
     }
 
     downloadOne = (file) => {
+      console.log('usao u downloadOne()');
       return new Promise((resolve, reject) => {
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId)
           .then(r => {
@@ -204,7 +205,7 @@ export default class App extends Component {
             Alert.alert(
               'About to download ' + mb + ' MB',
               'You are on: ' + res.type + '\n' + 'Do you wish to download?',
-              [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+              [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject('skip button pressed') }]
             )
           })
       })
@@ -235,7 +236,8 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         let a = filesArr.map(file =>
           downloadOne(file)
-        )
+        );
+        console.log(a);
         this.setState({ downloadedL: a.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))

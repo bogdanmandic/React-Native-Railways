@@ -52,7 +52,7 @@ class HBF extends Component {
                     <Body pages={this.props.filtered} />
                    
                     {this.state.visibleMenu &&
-                        <MenuList selected={} data={global.globalJson} from={this.props.from.menuId} />
+                        <MenuList data={global.globalJson} from={this.props.from.menuId} />
                     }
               
                     <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
