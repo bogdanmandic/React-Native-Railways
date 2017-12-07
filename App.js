@@ -165,7 +165,6 @@ export default class App extends Component {
     }
 
     downloadOne = (file) => {
-      console.log('usao u downloadOne()');
       return new Promise((resolve, reject) => {
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId)
           .then(r => {
