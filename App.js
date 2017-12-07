@@ -12,6 +12,8 @@ import axios from 'axios';
 import hash from 'object-hash';
 import * as Progress from 'react-native-progress';
 import md5 from 'md5';
+import Routes from './src/components/Routes';
+
 
 
 export default class App extends Component {
@@ -43,8 +45,9 @@ export default class App extends Component {
 
     projectJsonLogic = () => {
       return new Promise((resolve, reject) => {
-        axios.get(projectJsonURL)
-          .then(res => { fetchedProject = res.data; return Promise.resolve() })
+        fetch(projectJsonURL)
+          .then(res => res.json())
+          .then(res => { fetchedProject = res; return Promise.resolve() })
           .then(() => RNFB.fs.exists(pathToProjectJson))
           .then(res => !res ? nePostojiProjectJson() : postojiProjectJson())
           .then(() => checkServer())
@@ -101,10 +104,13 @@ export default class App extends Component {
       })
     }
 
+   
+
     contentJsonLogic = () => {
       return new Promise((resolve, reject) => {
-        axios.get(contentJsonURL)
-          .then(res => { fetchedContent = res.data; return Promise.resolve() })
+        fetch(contentJsonURL)
+          .then(res => res.json())
+          .then(res => { fetchedContent = res; return Promise.resolve() })
           .then(() => RNFB.fs.exists(pathToContentJson))
           .then(res => !res ? nePostojiContentJson() : postojiContentJson())
           .then(() => resolve())
@@ -217,7 +223,7 @@ export default class App extends Component {
               }
             })
         );
-        this.setState({ hashingL: a.length });
+        //this.setState({ hashingL: a.length });
         Promise.all(a)
           .then(() => resolve(downloadStage))
           .catch(err => console.log('Greska kod checkHashFiles()' + err))
@@ -295,8 +301,8 @@ export default class App extends Component {
   render() {
     if (!this.state.isLoading) {
       return (
-        <View>
-          <Text>AAAAAAAAAAAAA</Text>
+        <View style={styles.container}>
+          <Routes />
         </View>
       );
 
