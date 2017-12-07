@@ -21,51 +21,38 @@ class HBF extends Component {
       };
 
     render() {
-
         if (this.props.from == 'ab') {
             return (
-
                 <View>
-
                     <Header title={'Settings'} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
-
                     {this.state.visiblelanguage &&
                         <Languages />
                     }
                     {this.state.visibleSearch &&
                         <Search />
                     }
-
                     <SettingsComponent />
-
                     {this.state.visibleMenu &&
                         <MenuList data={global.globalJson} from={this.props.from.menuId} />
                     }
-
                     <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
-
                 </View>
             );
         } else {
             return (
-
                 <View>
                     <Header title={this.props.from.title} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
-
                     {this.state.visiblelanguage &&
                         <Languages />
                     }
                     {this.state.visibleSearch &&
                         <Search />
                     }
-                 
-                 
                 
                     <Body pages={this.props.filtered} />
                    
-                   
                     {this.state.visibleMenu &&
-                        <MenuList data={global.globalJson} from={this.props.from.menuId} />
+                        <MenuList selected={} data={global.globalJson} from={this.props.from.menuId} />
                     }
               
                     <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />

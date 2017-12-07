@@ -231,6 +231,7 @@ export default class App extends Component {
     }
 
     downloadFiles = (filesArr) => {
+      console.log('usao u downloadFiles()')
       return new Promise((resolve, reject) => {
         let a = filesArr.map(file =>
           downloadOne(file)

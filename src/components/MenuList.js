@@ -8,7 +8,7 @@ class MenuList extends React.PureComponent {
 
     state = {
         menus: this.props.data.menuTrees[1].menuTree, // promeniti lang u dinamicki (ovo je samo english)
-        selected: 0,
+        selected: this.props.selected || 0,
         pages: this.props.data.pages
     };
 
