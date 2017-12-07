@@ -32,6 +32,7 @@ export default class FullImage extends Component {
 
 const styles = StyleSheet.create({
   mainView: {
+    backgroundColor: 'white',
     position: 'relative',
     height: '100%'
   },
@@ -49,6 +50,6 @@ const styles = StyleSheet.create({
   contentPic: {
     flex: 3,
     height: '100%',
-    backgroundColor: '#e5e5e5',
+    backgroundColor: 'white',
   },
 });

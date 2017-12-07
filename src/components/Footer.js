@@ -23,11 +23,13 @@ const styles = StyleSheet.create({
     footbar: {
         height: '7%',
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: '#F5F5F5',
         borderColor: 'white',
         alignItems: 'flex-start',
         justifyContent: 'center',
         paddingLeft: 10,
+        borderTopWidth: 3,
+        borderColor: '#dddddd'
     },
     ico: {
         height: 24,

@@ -68,10 +68,12 @@ const styles = StyleSheet.create({
   navbarH: {
     height: '7%',
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#F5F5F5',
     justifyContent: "center",
     flexDirection: 'row',
     paddingRight: 10,
+    borderBottomWidth: 3,
+    borderColor: '#dddddd'
   },
   ico: {
     height: 24,
