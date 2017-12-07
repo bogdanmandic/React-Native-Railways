@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   swiperPic: {
-    width: 540,
+    width: 726.5,
     height: 600
   },
   ButtonContainer: {
