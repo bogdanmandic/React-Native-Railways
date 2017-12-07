@@ -49,9 +49,9 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     ico: {
-        height: 45,
-        width: 45,
-        padding: 10,
-        marginLeft: 10
+        height: 35,
+        width: 35,
+        margin: 10,
+      
     },
 });

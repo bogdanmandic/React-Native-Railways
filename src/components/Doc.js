@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     ico: {
-        height: 50,
-        width: 50,
-        marginRight: 15,
+        height: 35,
+        width: 35,
+        margin: 10,
     },
     pdf: {
         width: '100%',

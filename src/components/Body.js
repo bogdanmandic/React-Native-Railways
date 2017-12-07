@@ -56,7 +56,7 @@ class Body extends Component {
 
             <View style={styles.bodyCont}>
 
-                <Swiper>
+                <Swiper loop={false}>
                     {this.filterBody()}
                 </Swiper>
 

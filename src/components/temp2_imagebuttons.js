@@ -63,6 +63,7 @@ export default class ImageButtons extends Component {
 
 const styles = StyleSheet.create({
     mainView: {
+        backgroundColor: 'white',
         position: 'relative',
         height: '100%'
     },
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     contentPic: {
         width: '100%',
         height: '100%',
-        backgroundColor: '#e5e5e5',
+        backgroundColor: 'white',
         position: 'relative',
         alignItems: 'center'
     },
