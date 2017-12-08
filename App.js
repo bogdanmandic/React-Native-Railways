@@ -15,7 +15,6 @@ import * as Progress from 'react-native-progress';
 import md5 from 'md5';
 import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
-
 import Orientation from 'react-native-orientation';
 
 
@@ -30,9 +29,9 @@ export default class App extends Component {
     visibleDownloadError: false
   };
 
-  componentDidMount(){
-      Orientation.lockToLandscape();
-    }
+  componentDidMount() {
+      //Orientation.lockToLandscape();
+  }
 
   isLoading() {
     const deviceId = DeviceInfo.getUniqueID();
