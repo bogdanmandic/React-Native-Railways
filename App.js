@@ -16,6 +16,7 @@ import md5 from 'md5';
 import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
 
+import Orientation from 'react-native-orientation';
 
 
 export default class App extends Component {
@@ -28,6 +29,10 @@ export default class App extends Component {
     indeterminate: true,
     visibleDownloadError: false
   };
+
+  componentDidMount(){
+      Orientation.lockToLandscape();
+    }
 
   isLoading() {
     const deviceId = DeviceInfo.getUniqueID();
