@@ -10,7 +10,7 @@ class Languages extends Component {
             'Change language to:',
             '' + lang,
             [
-                { text: 'Change language', onPress: () => Actions.HBF({languageId : lang.languageId, from: 'ab'}) },
+                { text: 'Change language', onPress: () => console.log('aaaa') },
                 { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             ],
             { cancelable: false }
