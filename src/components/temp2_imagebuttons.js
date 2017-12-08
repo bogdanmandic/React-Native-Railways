@@ -42,7 +42,7 @@ export default class ImageButtons extends Component {
                         <View style={styles.contentPic}>
 
                             <LightBox style={{width: '100%', height: '100%', }}>
-                              <Image resizeMethod='resize' style={{width: '100%', height: '100%', resizeMode: 'contain'}} source={{ uri: this.props.files.find(file => file.substring(file.length - 3, file.length) == 'jpg' || file.substring(file.length - 3, file.length) == 'png') }}/>
+                              <Image resizeMethod='scale' style={{width: '100%', height: '100%', resizeMode: 'contain'}} source={{ uri: this.props.files.find(file => file.substring(file.length - 3, file.length) == 'jpg' || file.substring(file.length - 3, file.length) == 'png') }}/>
                             </LightBox>
                        
                             <View style={styles.ButtonContainer}>

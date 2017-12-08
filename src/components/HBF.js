@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, Text, Settings } from 'react-native';
 import Header from './Header';
 import Footer from './Footer';
 import MenuList from './MenuList';
@@ -15,58 +15,45 @@ class HBF extends Component {
         visibleMenu: false,
         visibleSearch: false,
         visiblelanguage: false,
+        visiblesettings: false,
         languangeId: 0
     }
     openVideos = () => {
         Alert.alert('Otvorili ste meni za izbor video snimaka.')
     };
 
-    findMenu1 = () =>  {
+    findMenu1 = () => {
 
     }
 
-    render() {
-        if (this.props.from == 'ab') {
-            return (
-                <View>
-                    <Header title={'Settings'} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
-                    {this.state.visiblelanguage &&
-                        <Languages />
-                    }
-                    {this.state.visibleSearch &&
-                        <Search />
-                    }
-                    <SettingsComponent />
-                    <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500 }}>
-                    
-                        <MenuList a={ this.props.languangeId ? Number(this.props.languangeId) : 2} data={global.globalJson} from={this.props.from.menuId} />
-                    </View>
-                    <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
-                </View>
-            );
-        } else {
-            return (
-                <View>
-                    <Header title={this.props.from.title} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} />
-                    {this.state.visiblelanguage &&
-                        <Languages />
-                    }
-                    {this.state.visibleSearch &&
-                        <Search />
-                    }
+    return(
 
-                    <Body pages={this.props.filtered} />
+            <View>
+            <Header title={this.props.from.title} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} onPressSettings={() => { this.state.visiblesettings ? this.setState({ visiblesettings: false }) : this.setState({ visiblesettings: true }) }} />
 
-                    <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500 }}>
-                        <MenuList selected={this.props.selected} a={ this.props.languangeId ? Number(this.props.languangeId)+1 : 2}  data={global.globalJson} from={this.props.from.menuId} />
-                    </View>
+                { this.state.visiblelanguage &&
+            <Languages />
+                }
+                { this.state.visibleSearch &&
+            <Search />
+                }
+                { this.state.visiblesettings &&
+            <SettingsComponent />
+                }
 
-                    <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
 
-                </View>
-            );
-        }
-    }
+                <Body pages = { this.props.filtered } />
+
+
+            <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500 }}>
+                <MenuList selected={this.props.selected} a={this.props.languangeId ? Number(this.props.languangeId) + 1 : 2} data={global.globalJson} from={this.props.from.menuId} />
+            </View>
+
+            <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
+
+            </View>
+        );
+}
 
 }
 
