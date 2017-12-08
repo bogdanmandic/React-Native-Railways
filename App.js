@@ -14,6 +14,7 @@ import hash from 'object-hash';
 import * as Progress from 'react-native-progress';
 import md5 from 'md5';
 import Routes from './src/components/Routes';
+import DeviceInfo from 'react-native-device-info';
 
 
 
@@ -22,23 +23,24 @@ export default class App extends Component {
   state = {
     downloadedL: 0,
     downloaded: 0,
-    isLoading: true,
+    isLoading: 1,
     visibleDownload: false,
     indeterminate: true,
     visibleDownloadError: false
   };
 
   isLoading() {
+    const deviceId = DeviceInfo.getUniqueID();
     let dirs = RNFB.fs.dirs;
     let fetchedProject = {};
     let server = '';
     let lastChangesOld = '';
-    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
+    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId' + deviceId;
     const pathToProjectJson = dirs.DocumentDir + '/projectJson.json';
 
     let fetchedContent = {};
     const pathToContentJson = dirs.DocumentDir + '/contentJson.json';
-    const contentJsonURLReqParametri = '?a=ajax&do=getContent&projectId=3&token=1234567890';
+    const contentJsonURLReqParametri = '?a=ajax&do=getContent&projectId=3&token=1234567890&deviceId=' + deviceId ;
     let contentJsonURL = '';
 
     const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.txt';
@@ -84,7 +86,8 @@ export default class App extends Component {
               // ovde obrisi check files
               console.log('hashevi projectJsona su razliciti!');
               global.projectJson = fetchedProject;
-              RNFB.config({ path: pathToProjectJson }).fetch('GET', projectJsonURL)
+              RNFB.fs.unlink(pathToCheckedFiles)
+                .then(() => RNFB.config({ path: pathToProjectJson }).fetch('GET', projectJsonURL))
                 .then(() => resolve());
             }
           })
@@ -105,7 +108,7 @@ export default class App extends Component {
       })
     }
 
-   
+
 
     contentJsonLogic = () => {
       return new Promise((resolve, reject) => {
@@ -142,8 +145,8 @@ export default class App extends Component {
               console.log('Else u postoji content JSON')
               global.globalJson = fetchedContent;
               obrisiStare(global.globalJson, fetchedContent);
-              RNFB.fs.unlink(pathToCheckedFiles)
-                .then(() => RNFB.config({ path: pathToContentJson }).fetch('GET', contentJsonURL))
+
+              RNFB.config({ path: pathToContentJson }).fetch('GET', contentJsonURL)
                 .then(() => resolve())
             }
           })
@@ -167,7 +170,7 @@ export default class App extends Component {
 
     downloadOne = (file) => {
       return new Promise((resolve, reject) => {
-        RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId)
+        RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
             console.log(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext);
             console.log('One file downloaded at ', r.path());
@@ -182,8 +185,8 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         let result = 0;
         if (filesArr.length <= 0) {
-          
-            reject('Array is empty')
+
+          reject('Array is empty')
         } else {
           filesArr.forEach(element => {
             result += Number(element.size);
@@ -205,7 +208,7 @@ export default class App extends Component {
             Alert.alert(
               'About to download ' + mb + ' MB',
               'You are on: ' + res.type + '\n' + 'Do you wish to download?',
-              [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+              [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject('skip button pressed') }]
             )
           })
       })
@@ -218,7 +221,7 @@ export default class App extends Component {
         let a = global.globalJson.files.map(file =>
           RNFB.fs.exists(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext)
             .then(res => {
-              if(!res) { /* && md5(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext)  != file.hash*/ 
+              if (!res) { /* && md5(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext)  != file.hash*/
                 downloadStage.push(file);
                 return Promise.resolve();
               }
@@ -232,10 +235,12 @@ export default class App extends Component {
     }
 
     downloadFiles = (filesArr) => {
+      console.log('usao u downloadFiles()')
       return new Promise((resolve, reject) => {
         let a = filesArr.map(file =>
           downloadOne(file)
-        )
+        );
+        console.log(a);
         this.setState({ downloadedL: a.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))
@@ -255,18 +260,18 @@ export default class App extends Component {
           .then(() => downloadFiles(niz))
         )
         .catch(err => console.log('Catch od glavnog bloka od checkHashFiles: ' + err))
-        .then(() => this.setState({ isLoading: false }))
+        .then(() => this.setState({ isLoading: 0 }))
     }
 
     akoNemaNeta = () => {
       RNFB.fs.exists(pathToContentJson)
         .then(res => {
           if (!res) {
-            this.setState({ isLoading: 'offline' })
+            this.setState({ isLoading: -1 })
           } else {
             RNFB.fs.readFile(pathToContentJson, 'utf8')
               .then(res => { global.globalJson = JSON.parse(res); return Promise.resolve() })
-              .then(() => this.setState({ isLoading: false }))
+              .then(() => this.setState({ isLoading: 0 }))
           }
         })
     }

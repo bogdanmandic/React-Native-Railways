@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 
 class Languages extends Component {
@@ -9,7 +10,7 @@ class Languages extends Component {
             'Change language to:',
             '' + lang,
             [
-                { text: 'Change language', onPress: () => console.log('will change app to ' + lang) },
+                { text: 'Change language', onPress: () => console.log('aaaa') },
                 { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             ],
             { cancelable: false }
