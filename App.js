@@ -19,6 +19,8 @@ import Routes from './src/components/Routes';
 export default class App extends Component {
 
   state = {
+    downloadSpeed: 0,
+    downloadTime: 0,
     downloadedL: 0,
     downloaded: 0,
     isLoading: true,
@@ -104,7 +106,7 @@ export default class App extends Component {
       })
     }
 
-   
+
 
     contentJsonLogic = () => {
       return new Promise((resolve, reject) => {
@@ -181,8 +183,8 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         let result = 0;
         if (filesArr.length <= 0) {
-          
-            reject('Array is empty')
+
+          reject('Array is empty')
         } else {
           filesArr.forEach(element => {
             result += Number(element.size);
@@ -201,9 +203,26 @@ export default class App extends Component {
         }
         NetInfo.getConnectionInfo()
           .then((res) => {
+            let warningString = res.type == 'cellular' ? 'Warning, you are on cellular network, this download could be charged.' : '';
+            let downloadSpeed = 0;
+            switch (res.effectiveType) {
+              case '2g':
+                downloadSpeed = 0.04/8.0;
+                break;
+              case '3g':
+                downloadSpeed = 6.04/8.0;
+                break;
+              case '4g':
+                downloadSpeed = 18.4/8.0;
+                break;
+
+              default:
+                break;
+            }
+            let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(1) : 'inf.';
             Alert.alert(
               'About to download ' + mb + ' MB',
-              'You are on: ' + res.type + '\n' + 'Do you wish to download?',
+              '' + warningString + '\n' + 'Estimated time: ' + est + ' minutes.\nDo you wish to download?',
               [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
             )
           })
@@ -217,7 +236,7 @@ export default class App extends Component {
         let a = global.globalJson.files.map(file =>
           RNFB.fs.exists(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext)
             .then(res => {
-              if(!res) { /* && md5(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext)  != file.hash*/ 
+              if (!res) { /* && md5(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext)  != file.hash*/
                 downloadStage.push(file);
                 return Promise.resolve();
               }
