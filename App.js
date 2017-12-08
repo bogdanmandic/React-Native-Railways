@@ -107,12 +107,18 @@ export default class App extends Component {
       })
     }
 
-
+    a = () => {
+      return new Promise((resolve, reject) => {
+        let a = require('./codebeautify.json');
+        return resolve(a);
+      })
+    }
 
     contentJsonLogic = () => {
       return new Promise((resolve, reject) => {
         fetch(contentJsonURL)
           .then(res => res.json())
+          //a()
           .then(res => { fetchedContent = res; return Promise.resolve() })
           .then(() => RNFB.fs.exists(pathToContentJson))
           .then(res => !res ? nePostojiContentJson() : postojiContentJson())
@@ -137,13 +143,15 @@ export default class App extends Component {
         RNFB.fs.readFile(pathToContentJson, 'utf8')
           .then(res => {
             global.globalJson = JSON.parse(res);
-            if (fetchedProject.project.lastChanges == lastChangesOld) {
+            //if (fetchedProject.project.lastChanges == lastChangesOld) {
+              if(hash(fetchedContent) == hash(global.globalJson)) {
+              global.globalJson
               console.log('usao u if od postojiContentJson()')
               return resolve()
             } else {
               console.log('Else u postoji content JSON')
               global.globalJson = fetchedContent;
-              obrisiStare(global.globalJson, fetchedContent);
+              //obrisiStare(global.globalJson, fetchedContent);
 
               RNFB.config({ path: pathToContentJson }).fetch('GET', contentJsonURL)
                 .then(() => resolve())
