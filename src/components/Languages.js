@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 
 class Languages extends Component {
@@ -9,7 +10,7 @@ class Languages extends Component {
             'Change language to:',
             '' + lang,
             [
-                { text: 'Change language', onPress: () => console.log('will change app to ' + lang) },
+                { text: 'Change language', onPress: () => Actions.HBF({languageId : lang.languageId, from: 'ab'}) },
                 { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             ],
             { cancelable: false }
@@ -19,7 +20,7 @@ class Languages extends Component {
     openLanguage = () => {
         return global.projectJson.languages.map((object, index) =>
             <View key={index}>
-                <Text style={{ fontSize: 25, color: 'white' }} onPress={() => this.onclickLanguageText(object.language)}>{object.language}</Text>
+                <Text style={{ fontSize: 25, color: 'white' }} onPress={() => this.onclickLanguageText(object)}>{object.language}</Text>
                 <View style={{ borderBottomWidth: 3, borderColor: 'white', }} />
             </View>
         );
