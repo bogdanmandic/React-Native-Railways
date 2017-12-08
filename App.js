@@ -5,7 +5,8 @@ import {
   Text,
   View,
   NetInfo,
-  Alert
+  Alert,
+  StatusBar
 } from 'react-native';
 import RNFB from 'react-native-fetch-blob';
 import axios from 'axios';
@@ -15,6 +16,7 @@ import md5 from 'md5';
 import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
 
+import Orientation from 'react-native-orientation';
 
 
 export default class App extends Component {
@@ -27,6 +29,10 @@ export default class App extends Component {
     indeterminate: true,
     visibleDownloadError: false
   };
+
+  componentDidMount(){
+      Orientation.lockToLandscape();
+    }
 
   isLoading() {
     const deviceId = DeviceInfo.getUniqueID();
@@ -322,6 +328,7 @@ export default class App extends Component {
     } else if (this.state.isLoading) {
       return (
         <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
+         <StatusBar barStyle="dark-content" hidden={true} />
           <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1', justifyContent: 'center', }}>
             <Text style={styles.loadTextF}>Loading, please wait...</Text>
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
@@ -339,6 +346,7 @@ export default class App extends Component {
     else if (this.state.isLoading == 'offline') {
       return (
         <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
+         <StatusBar barStyle="dark-content" hidden={true} />
           <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1' }}>
             <Text style={styles.loadText}>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
             <Text style={styles.loadText}>Please connect to internet first.</Text>
