@@ -14,7 +14,7 @@ import hash from 'object-hash';
 import * as Progress from 'react-native-progress';
 import md5 from 'md5';
 import Routes from './src/components/Routes';
-
+import Orientation from 'react-native-orientation';
 
 
 export default class App extends Component {
@@ -27,6 +27,10 @@ export default class App extends Component {
     indeterminate: true,
     visibleDownloadError: false
   };
+
+  componentDidMount(){
+      Orientation.lockToLandscape();
+    }
 
   isLoading() {
     let dirs = RNFB.fs.dirs;
