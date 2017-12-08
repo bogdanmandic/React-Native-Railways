@@ -24,11 +24,11 @@ export default class Header extends React.Component {
     Alert.alert('You opened Folder')
   };
   openSettings = () => {
-    Actions.HBF({ from: 'ab' })
+    this.props.onPressSettings();
   };
   componentDidMount() {
     StatusBar.setHidden(true);
- }
+  }
   render() {
 
     return (
@@ -38,13 +38,9 @@ export default class Header extends React.Component {
         <StatusBar barStyle="dark-content" hidden={true} />
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
 
-          <View style={{ flex: 1 }}>
-            <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/32/back.png')} /></TouchableWithoutFeedback>
-          </View>
+          <View style={{ flex: 3.5, alignItems: 'center', alignSelf: 'center', width: '100%' }}><HTML html={this.props.title ? this.props.title : ''} /></View>
 
-          <View style={{ flex: 10, alignItems: 'center', alignSelf: 'center', width: '100%' }}><HTML html={this.props.title ? this.props.title : ''} /></View>
-
-          <View style={{ flex: 5, flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
 
             <TouchableWithoutFeedback onPress={this.openLanguage}><Image style={styles.ico} source={require('./ico/32/earth.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openHome}><Image style={styles.ico} source={require('./ico/32/home.png')} /></TouchableWithoutFeedback>
