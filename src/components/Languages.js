@@ -19,8 +19,8 @@ class Languages extends Component {
     openLanguage = () => {
         return global.projectJson.languages.map((object, index) =>
             <View key={index}>
-                <Text style={{ fontSize: 25, color: 'white' }} onPress={() => this.onclickLanguageText(object.language)}>{object.language}</Text>
-                <View style={{ borderBottomWidth: 3, borderColor: 'white', }} />
+                <Text style={{ fontSize: 25, color: '#595959' }} onPress={() => this.onclickLanguageText(object.language)}>{object.language}</Text>
+                <View style={{ borderBottomWidth: 3, borderColor: '#dddddd', }} />
             </View>
         );
     };
@@ -37,7 +37,7 @@ class Languages extends Component {
 const styles = StyleSheet.create({
     langCont: {
         position: 'absolute',
-        backgroundColor: '#4169e1',
+        backgroundColor: '#fff',
         top: 50,
         height: 70,
         width: '100%',

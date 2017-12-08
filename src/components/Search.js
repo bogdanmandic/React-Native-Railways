@@ -149,7 +149,7 @@ class Search extends Component {
 
                 <View>
                     <View style={{ alignItems: 'center', padding: 20 }}>
-                        <Text style={{ color: 'black', fontSize: 20 }}>Choose the Category:</Text>
+                        <Text style={{ color: '#595959', fontSize: 20 }}>Choose the Category:</Text>
                     </View>
                     <View style={styles.ButtonsView}>
                         <TouchableOpacity style={styles.ButtonContent} onPress={() => this.setState({ buttonActive: 'content' })}>
