@@ -217,10 +217,29 @@ export default class App extends Component {
         }
         NetInfo.getConnectionInfo()
           .then((res) => {
+            let cellularType = res.effectiveType;
+            let warningString = res.type == 'cellular' ? 'Warning, you are on cellular ' + cellularType + ' network, this download could be charged.' : '';
+            let downloadSpeed = 0;
+            if (res.type == 'cellular')
+              switch (res.effectiveType) {
+                case '2g':
+                  downloadSpeed = 0.04 / 8.0;
+                  break;
+                case '3g':
+                  downloadSpeed = 6.04 / 8.0;
+                  break;
+                case '4g':
+                  downloadSpeed = 18.4 / 8.0;
+                  break;
+              }
+            if (res.type == 'wifi')
+              downloadSpeed = 23.5 / 8.0;
+            let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
             Alert.alert(
               'About to download ' + mb + ' MB',
-              'You are on: ' + res.type + '\n' + 'Do you wish to download?',
-              [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject('skip button pressed') }]
+              '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
+              [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+
             )
           })
       })
