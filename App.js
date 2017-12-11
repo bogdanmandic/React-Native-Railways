@@ -39,7 +39,7 @@ export default class App extends Component {
     let fetchedProject = {};
     let server = '';
     let lastChangesOld = '';
-    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId' + deviceId;
+    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId=' + deviceId;
     const pathToProjectJson = dirs.DocumentDir + '/projectJson.json';
 
     let fetchedContent = {};

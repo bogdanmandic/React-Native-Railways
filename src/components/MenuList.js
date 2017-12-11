@@ -21,7 +21,6 @@ class MenuList extends React.PureComponent {
     }
     componentWillMount() {
         // this.setState({menus: this.props.data.menuTrees[this.props.a-1].menuTree});
-        
     }
 
 
