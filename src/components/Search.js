@@ -16,13 +16,15 @@ class Search extends Component {
         searchFiles: [],
         searchMenus: [],
         buttonActive: 'content',
-        menu: {}
+        menu: {},
+        video: false,
+        content: true
     }
     /**
      * Searches for Menu Object by MenuId
      */
     searchMenu(menuId) {
-        return global.globalJson.menus[1].menu.find(element => 
+        return global.globalJson.menus[1].menu.find(element =>
             menuId == element.menuId
         )
     }
@@ -38,13 +40,14 @@ class Search extends Component {
             case 'content':
                 rat = this.state.searchPages.map((element, i) => {
 
-                return <TouchableOpacity key={i} onPress={() => Actions.reset('HBF', {from: this.searchMenu(element.menuId), filtered: Array(element)})}> 
-
-                        <Text style={{ fontSize: 25 }} key={element.pageId}>{element.title}</Text>
-                        <Image
-                            style={styles.ButtonIconStyle2}
-                            source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
-                        />
+                    return <TouchableOpacity key={i} onPress={() => Actions.reset('HBF', { from: this.searchMenu(element.menuId), filtered: Array(element) })}>
+                        <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', borderBottomWidth: 3, borderColor: '#dddddd' }}>
+                            <Image
+                                style={{ height: 60, width: 75, marginRight: 20 }}
+                                source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
+                            />
+                            <Text style={{ fontSize: 25 }} key={element.pageId}>{element.title}</Text>
+                        </View>
                     </TouchableOpacity>
 
                 });
@@ -53,13 +56,14 @@ class Search extends Component {
                 rat = this.state.searchFiles.map((element, i) => {
                     if (element.type == 'video')
 
-                        return <TouchableOpacity key={i} onPress={() => Actions.VideoView({videouri: 'file://' + RNFB.fs.dirs.DocumentDir + '/' +  element.fileId + '.' + element.ext})}>
-                            <Text style={{ fontSize: 25 }} key={element.filename}>{this.pageTitleHelperForFile(element.pageId).title }</Text>
-                            <Image
-                                style={styles.ButtonIconStyle2}
-                                source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
-                            />
-
+                        return <TouchableOpacity key={i} onPress={() => Actions.VideoView({ videouri: 'file://' + RNFB.fs.dirs.DocumentDir + '/' + element.fileId + '.' + element.ext })}>
+                            <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', borderBottomWidth: 3, borderColor: '#dddddd' }}>
+                                <Image
+                                    style={{ height: 60, width: 75, marginRight: 20 }}
+                                    source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
+                                />
+                                <Text style={{ fontSize: 25 }} key={element.filename}>{this.pageTitleHelperForFile(element.pageId).title}</Text>
+                            </View>
                         </TouchableOpacity>
                 });
                 break;
@@ -194,11 +198,11 @@ class Search extends Component {
 
                 <View>
                     <View style={{ alignItems: 'center', padding: 20 }}>
-                        <Text style={{ color: 'black', fontSize: 20 }}>Choose the Category:</Text>
+                        <Text style={{ color: '#595959', fontSize: 20 }}>Choose the Category:</Text>
                     </View>
                     <View style={styles.ButtonsView}>
+                        <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.content ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'content', content: true, video: false })}>
 
-                        <TouchableOpacity style={styles.ButtonContent} onPress={() => this.setState({ buttonActive: 'content' })}>
 
                             <Image
                                 style={styles.ButtonIconStyle2}
@@ -207,11 +211,12 @@ class Search extends Component {
                             <Text style={styles.ButtonTextStyle}>CONTENT</Text>
                         </TouchableOpacity >
 
-                        <TouchableOpacity style={styles.ButtonContent} onPress={() => this.setState({ buttonActive: 'video' })}>
+                        <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.video ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'video', video: true, content: false })}>
 
                             <Image
                                 style={styles.ButtonIconStyle2}
-                                source={require('./ico/play-button.png')}
+                                source={require('./ico/32/play.png')}
+
                             />
                             <Text style={styles.ButtonTextStyle}>VIDEO</Text>
                         </TouchableOpacity >
@@ -255,7 +260,7 @@ const styles = StyleSheet.create({
     searchCont: {
         position: 'absolute',
         backgroundColor: '#FFFFFF',
-        height: '70%',
+        height: '86%',
         width: '100%',
         top: '7%',
         zIndex: 3,
@@ -275,11 +280,11 @@ const styles = StyleSheet.create({
     ButtonContent: {
         width: 200,
         height: 50,
-        borderColor: '#4169e1',
+        borderColor: '#F5F5F5',
         borderWidth: 3,
         borderRadius: 4,
         paddingHorizontal: 40,
-        backgroundColor: '#4169e1',
+        backgroundColor: '#dddddd',
         padding: 18,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -293,7 +298,7 @@ const styles = StyleSheet.create({
     },
     ButtonTextStyle: {
         fontSize: 20,
-        color: 'white'
+        color: '#595959'
     },
     ico: {
         height: 35,
