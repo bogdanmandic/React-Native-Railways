@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ListView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import RNFB from 'react-native-fetch-blob';
 
 class Search extends Component {
 
@@ -16,7 +17,9 @@ class Search extends Component {
         searchMenus: [],
         buttonActive: 'content'
     }
-    //napravi objekte za ispisivanje search-a
+    /**
+     * Returns array of JSX titles of pages containing text from search
+     */
     createObject() {
         let rat = [];
         switch (this.state.buttonActive) {
@@ -24,6 +27,10 @@ class Search extends Component {
                 rat = this.state.searchPages.map((element, i) => {
                     return <TouchableOpacity key={i} onPress={() => console.log(element.pageId)}>
                         <Text style={{ fontSize: 25 }} key={element.pageId}>{element.title}</Text>
+                        <Image
+                            style={styles.ButtonIconStyle2}
+                            source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
+                        />
                     </TouchableOpacity>
 
                 });
@@ -32,7 +39,11 @@ class Search extends Component {
                 rat = this.state.searchFiles.map((element, i) => {
                     if (element.type == 'video')
                         return <TouchableOpacity key={i} onPress={() => console.log(element.pageId)}>
-                            <Text style={{ fontSize: 25 }} key={element.filename}>{this.pageTitleHelperForFile(element.pageId).title + ' ' + element.filename + '.' + element.ext}</Text>
+                            <Text style={{ fontSize: 25 }} key={element.filename}>{this.pageTitleHelperForFile(element.pageId).title }</Text>
+                            <Image
+                                style={styles.ButtonIconStyle2}
+                                source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
+                            />
                         </TouchableOpacity>
                 });
                 break;
@@ -54,6 +65,22 @@ class Search extends Component {
      */
     pageTitleHelperForFile = (pid) => {
         return this.state.searchPages.find(p => p.pageId == pid);
+    }
+
+    /**
+     * returns uri from first image it finds 
+     */
+    pageImageHelper = (pid) => {
+        let page = this.pageTitleHelperForFile(pid);
+        let file = 'none';
+        if (page.files != null)
+            if (page.files.length > 0) {
+                page.files.forEach(e => {
+                    let dirs = RNFB.fs.dirs;
+                    file = dirs.DocumentDir + '/' + e.fileId + '.' + e.ext;
+                })
+            }
+        return file;
     }
 
     searchDoTitlesMENU = (item, where) => {
