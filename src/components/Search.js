@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ListView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ListView, ScrollView, Keyboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 class Search extends Component {
@@ -24,7 +24,7 @@ class Search extends Component {
         switch (this.state.buttonActive) {
             case 'content':
                 rat = this.state.searchPages.map((element, i) => {
-                    return <TouchableOpacity key={i} onPress={() => {console.log(element.pageId)}}>
+                    return <TouchableOpacity key={i} onPress={() => { console.log(element.pageId) }}>
                         <Text style={{ fontSize: 25 }} key={element.pageId}>{element.title}</Text>
                     </TouchableOpacity>
 
@@ -33,7 +33,7 @@ class Search extends Component {
             case 'video':
                 rat = this.state.searchFiles.map((element, i) => {
                     if (element.type == 'video')
-                        return <TouchableOpacity key={i} onPress={() => {console.log(element.pageId)}}>
+                        return <TouchableOpacity key={i} onPress={() => { console.log(element.pageId) }}>
                             <Text style={{ fontSize: 25 }} key={element.filename}>{this.pageTitleHelperForFile(element.pageId).title + ' ' + element.filename + '.' + element.ext}</Text>
                         </TouchableOpacity>
                 });
@@ -154,14 +154,14 @@ class Search extends Component {
                         <Text style={{ color: '#595959', fontSize: 20 }}>Choose the Category:</Text>
                     </View>
                     <View style={styles.ButtonsView}>
-                        <TouchableOpacity style={[styles.ButtonContent, {backgroundColor: this.state.content ? 'white': '#dddddd'}]} onPress={() => this.setState({ buttonActive: 'content', content: true, video: false})}>
+                        <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.content ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'content', content: true, video: false })}>
                             <Image
                                 style={styles.ButtonIconStyle2}
                                 source={require('./ico/32/rnd.png')}
                             />
                             <Text style={styles.ButtonTextStyle}>CONTENT</Text>
                         </TouchableOpacity >
-                        <TouchableOpacity style={[styles.ButtonContent, {backgroundColor: this.state.video ? 'white': '#dddddd'}]} onPress={() => this.setState({ buttonActive: 'video', video: true, content: false})}>
+                        <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.video ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'video', video: true, content: false })}>
                             <Image
                                 style={styles.ButtonIconStyle2}
                                 source={require('./ico/32/play.png')}
@@ -178,6 +178,7 @@ class Search extends Component {
                         </TouchableOpacity>
                         <View style={{ padding: 10 }}>
                             <TextInput
+                                keyboardType='default'
                                 placeholder="Search"
                                 style={styles.textInput}
                                 onChangeText={(text) => {
@@ -187,16 +188,16 @@ class Search extends Component {
                                 value={this.state.text}
                             />
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={Keyboard.dismiss}>
                             <Image
                                 style={{ width: 32, height: 32 }}
                                 source={require('./ico/32/right.png')}
                             />
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <ScrollView>
                         {this.createObject()}
-                    </View>
+                    </ScrollView>
                 </View>
             </View>
         );
@@ -207,9 +208,9 @@ const styles = StyleSheet.create({
     searchCont: {
         position: 'absolute',
         backgroundColor: '#FFFFFF',
-        height: 500,
+        height: '70%',
         width: '100%',
-        top: 50,
+        top: '7%',
         zIndex: 3,
         borderBottomWidth: 3,
         borderColor: '#dddddd',
