@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 20,
+    bottom: 40,
     right: 20,
     width: '51%',
   },
