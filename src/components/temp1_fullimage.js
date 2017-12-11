@@ -16,7 +16,7 @@ export default class FullImage extends Component {
             <View style={styles.contentPic}>
 
             <LightBox style={{width: '100%', height: '100%', }}>
-              <Image resizeMethod='scale' style={{ width: '100%', height: '100%', resizeMode: 'contain'}} source={{ uri: this.props.files[0] }} />
+              <Image resizeMethod='scale' style={{ width: '100%', height: '100%', resizeMode: 'cover'}} source={{ uri: this.props.files[0] }} />
             </LightBox>
 
             </View>
