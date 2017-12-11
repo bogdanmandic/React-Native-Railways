@@ -148,8 +148,8 @@ export default class App extends Component {
         RNFB.fs.readFile(pathToContentJson, 'utf8')
           .then(res => {
             global.globalJson = JSON.parse(res);
-            //if (fetchedProject.project.lastChanges == lastChangesOld) {
-              if(hash(fetchedContent) == hash(global.globalJson)) {
+            if (fetchedProject.project.lastChanges == lastChangesOld) {
+              //if(hash(fetchedContent) == hash(global.globalJson)) {
               global.globalJson
               console.log('usao u if od postojiContentJson()')
               return resolve()
@@ -321,6 +321,7 @@ export default class App extends Component {
   }// End of isLoading()
 
   componentWillMount() {
+    Orientation.lockToLandscape();
     this.isLoading();
   }
 
