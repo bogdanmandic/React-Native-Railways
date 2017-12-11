@@ -10,7 +10,7 @@ class Footer extends Component {
             <View style={styles.footbar}>
 
                 <TouchableOpacity onPress={this.props.onPress}>
-                    <Image style={styles.ico} source={require('./ico/main_menu_2.png')} />
+                    <Image style={styles.ico} source={require('./ico/32/main-menu.png')} />
                 </TouchableOpacity>
 
             </View>

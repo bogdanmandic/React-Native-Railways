@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ListView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ListView, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import RNFB from 'react-native-fetch-blob';
 
@@ -15,7 +15,9 @@ class Search extends Component {
         searchPages: [],
         searchFiles: [],
         searchMenus: [],
-        buttonActive: 'content'
+        buttonActive: 'content',
+        video: false,
+        content: true,
     }
     /**
      * Returns array of JSX titles of pages containing text from search
@@ -25,7 +27,7 @@ class Search extends Component {
         switch (this.state.buttonActive) {
             case 'content':
                 rat = this.state.searchPages.map((element, i) => {
-                    return <TouchableOpacity key={i} onPress={() => console.log(element.pageId)}>
+                    return <TouchableOpacity key={i} onPress={() => {console.log(element.pageId)}}>
                         <Text style={{ fontSize: 25 }} key={element.pageId}>{element.title}</Text>
                         <Image
                             style={styles.ButtonIconStyle2}
@@ -176,20 +178,20 @@ class Search extends Component {
 
                 <View>
                     <View style={{ alignItems: 'center', padding: 20 }}>
-                        <Text style={{ color: 'black', fontSize: 20 }}>Choose the Category:</Text>
+                        <Text style={{ color: '#595959', fontSize: 20 }}>Choose the Category:</Text>
                     </View>
                     <View style={styles.ButtonsView}>
-                        <TouchableOpacity style={styles.ButtonContent} onPress={() => this.setState({ buttonActive: 'content' })}>
+                        <TouchableOpacity style={[styles.ButtonContent, {backgroundColor: this.state.content ? 'white': '#dddddd'}]} onPress={() => this.setState({ buttonActive: 'content', content: true, video: false})}>
                             <Image
                                 style={styles.ButtonIconStyle2}
                                 source={require('./ico/32/rnd.png')}
                             />
                             <Text style={styles.ButtonTextStyle}>CONTENT</Text>
                         </TouchableOpacity >
-                        <TouchableOpacity style={styles.ButtonContent} onPress={() => this.setState({ buttonActive: 'video' })}>
+                        <TouchableOpacity style={[styles.ButtonContent, {backgroundColor: this.state.video ? 'white': '#dddddd'}]} onPress={() => this.setState({ buttonActive: 'video', video: true, content: false})}>
                             <Image
                                 style={styles.ButtonIconStyle2}
-                                source={require('./ico/play-button.png')}
+                                source={require('./ico/32/play.png')}
                             />
                             <Text style={styles.ButtonTextStyle}>VIDEO</Text>
                         </TouchableOpacity >
@@ -240,7 +242,6 @@ const styles = StyleSheet.create({
         borderColor: '#dddddd',
     },
     textInput: {
-        backgroundColor: 'white',
         width: 300,
         height: 50,
     },
@@ -252,11 +253,11 @@ const styles = StyleSheet.create({
     ButtonContent: {
         width: 200,
         height: 50,
-        borderColor: '#4169e1',
+        borderColor: '#F5F5F5',
         borderWidth: 3,
         borderRadius: 4,
         paddingHorizontal: 40,
-        backgroundColor: '#4169e1',
+        backgroundColor: '#dddddd',
         padding: 18,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
     },
     ButtonTextStyle: {
         fontSize: 20,
-        color: 'white'
+        color: '#595959'
     },
     ico: {
         height: 35,

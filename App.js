@@ -5,7 +5,8 @@ import {
   Text,
   View,
   NetInfo,
-  Alert
+  Alert,
+  StatusBar
 } from 'react-native';
 import RNFB from 'react-native-fetch-blob';
 import axios from 'axios';
@@ -13,33 +14,38 @@ import hash from 'object-hash';
 import * as Progress from 'react-native-progress';
 import md5 from 'md5';
 import Routes from './src/components/Routes';
+import DeviceInfo from 'react-native-device-info';
 
+import Orientation from 'react-native-orientation';
 
 
 export default class App extends Component {
 
   state = {
-    downloadSpeed: 0,
-    downloadTime: 0,
     downloadedL: 0,
     downloaded: 0,
-    isLoading: true,
+    isLoading: 1,
     visibleDownload: false,
     indeterminate: true,
     visibleDownloadError: false
   };
 
+  componentDidMount(){
+      Orientation.lockToLandscape();
+    }
+
   isLoading() {
+    const deviceId = DeviceInfo.getUniqueID();
     let dirs = RNFB.fs.dirs;
     let fetchedProject = {};
     let server = '';
     let lastChangesOld = '';
-    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
+    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId' + deviceId;
     const pathToProjectJson = dirs.DocumentDir + '/projectJson.json';
 
     let fetchedContent = {};
     const pathToContentJson = dirs.DocumentDir + '/contentJson.json';
-    const contentJsonURLReqParametri = '?a=ajax&do=getContent&projectId=3&token=1234567890';
+    const contentJsonURLReqParametri = '?a=ajax&do=getContent&projectId=3&token=1234567890&deviceId=' + deviceId ;
     let contentJsonURL = '';
 
     const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.txt';
@@ -85,7 +91,8 @@ export default class App extends Component {
               // ovde obrisi check files
               console.log('hashevi projectJsona su razliciti!');
               global.projectJson = fetchedProject;
-              RNFB.config({ path: pathToProjectJson }).fetch('GET', projectJsonURL)
+              RNFB.fs.unlink(pathToCheckedFiles)
+                .then(() => RNFB.config({ path: pathToProjectJson }).fetch('GET', projectJsonURL))
                 .then(() => resolve());
             }
           })
@@ -143,8 +150,8 @@ export default class App extends Component {
               console.log('Else u postoji content JSON')
               global.globalJson = fetchedContent;
               obrisiStare(global.globalJson, fetchedContent);
-              RNFB.fs.unlink(pathToCheckedFiles)
-                .then(() => RNFB.config({ path: pathToContentJson }).fetch('GET', contentJsonURL))
+
+              RNFB.config({ path: pathToContentJson }).fetch('GET', contentJsonURL)
                 .then(() => resolve())
             }
           })
@@ -168,7 +175,7 @@ export default class App extends Component {
 
     downloadOne = (file) => {
       return new Promise((resolve, reject) => {
-        RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId)
+        RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
             console.log(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext);
             console.log('One file downloaded at ', r.path());
@@ -225,6 +232,7 @@ export default class App extends Component {
               'About to download ' + mb + ' MB',
               '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
               [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+
             )
           })
       })
@@ -251,10 +259,12 @@ export default class App extends Component {
     }
 
     downloadFiles = (filesArr) => {
+      console.log('usao u downloadFiles()')
       return new Promise((resolve, reject) => {
         let a = filesArr.map(file =>
           downloadOne(file)
-        )
+        );
+        console.log(a);
         this.setState({ downloadedL: a.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))
@@ -274,18 +284,18 @@ export default class App extends Component {
           .then(() => downloadFiles(niz))
         )
         .catch(err => console.log('Catch od glavnog bloka od checkHashFiles: ' + err))
-        .then(() => this.setState({ isLoading: false }))
+        .then(() => this.setState({ isLoading: 0 }))
     }
 
     akoNemaNeta = () => {
       RNFB.fs.exists(pathToContentJson)
         .then(res => {
           if (!res) {
-            this.setState({ isLoading: 'offline' })
+            this.setState({ isLoading: -1 })
           } else {
             RNFB.fs.readFile(pathToContentJson, 'utf8')
               .then(res => { global.globalJson = JSON.parse(res); return Promise.resolve() })
-              .then(() => this.setState({ isLoading: false }))
+              .then(() => this.setState({ isLoading: 0 }))
           }
         })
     }
@@ -329,6 +339,7 @@ export default class App extends Component {
     } else if (this.state.isLoading) {
       return (
         <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
+         <StatusBar barStyle="dark-content" hidden={true} />
           <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1', justifyContent: 'center', }}>
             <Text style={styles.loadTextF}>Loading, please wait...</Text>
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
@@ -346,6 +357,7 @@ export default class App extends Component {
     else if (this.state.isLoading == 'offline') {
       return (
         <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
+         <StatusBar barStyle="dark-content" hidden={true} />
           <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1' }}>
             <Text style={styles.loadText}>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
             <Text style={styles.loadText}>Please connect to internet first.</Text>

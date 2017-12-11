@@ -23,7 +23,7 @@ class Menu3 extends Component {
         let data = JSON.stringify(this.state.filteredPages);
         return (
             <View style={styles.menu3Item}>
-                <TouchableOpacity onPress={() => Actions.HBF({ from: this.props.menu3, filtered: this.state.filteredPages })}>
+                <TouchableOpacity onPress={() => Actions.HBF({ from: this.props.menu3, filtered: this.state.filteredPages, selected: this.props.selected })}>
                     <Text numberOfLines={1} style={[styles.menu3Text, { color: this.props.isPressed ? '#2980b9' : 'black' }, {borderColor: this.props.isPressed ? '#2980b9' : '#E0E0E0' }]}>{this.props.menu3.title}</Text>
                 </TouchableOpacity>
             </View>
