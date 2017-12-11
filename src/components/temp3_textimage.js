@@ -37,7 +37,7 @@ export default class TextImage extends Component {
   renderPics() {
     return this.state.imagesPath.map((pic, i) => {
       return <View key={i}>
-        <LightBox style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <LightBox style={{ width: '100%', height: '100%'}}>
           <Image resizeMode={Image.resizeMode.cover} style={styles.swiperPic} source={{ uri: pic }} />
         </LightBox>
       </View>
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 20,
+    bottom: 40,
     right: 20,
     width: '51%',
   },
