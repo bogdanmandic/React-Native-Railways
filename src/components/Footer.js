@@ -9,7 +9,7 @@ class Footer extends Component {
 
             <View style={styles.footbar}>
 
-                <TouchableOpacity onPress={this.props.onPress}>
+                <TouchableOpacity onPress={this.props.onPress} style={{paddingHorizontal: 40, paddingVertical: 15}}>
                     <Image style={styles.ico} source={require('./ico/32/main-menu.png')} />
                 </TouchableOpacity>
 
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        paddingLeft: 10,
         borderTopWidth: 3,
         borderColor: '#dddddd'
     },

@@ -7,6 +7,7 @@ import Body from './Body';
 import SettingsComponent from './Settings';
 import Languages from './Languages';
 import Search from './Search';
+import Orientation from 'react-native-orientation';
 
 
 class HBF extends Component {
@@ -22,38 +23,39 @@ class HBF extends Component {
         Alert.alert('Otvorili ste meni za izbor video snimaka.')
     };
 
-    findMenu1 = () => {
-
+    componentWillMount() {
+        Orientation.lockToLandscape();
     }
 
-    return(
+    render() {
+        return (
 
             <View>
-            <Header title={this.props.from.title} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} onPressSettings={() => { this.state.visiblesettings ? this.setState({ visiblesettings: false }) : this.setState({ visiblesettings: true }) }} />
+                <Header title={this.props.from.title} onPressLang={() => { this.state.visiblelanguage ? this.setState({ visiblelanguage: false }) : this.setState({ visiblelanguage: true }) }} onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true }) }} onPressSettings={() => { this.state.visiblesettings ? this.setState({ visiblesettings: false }) : this.setState({ visiblesettings: true }) }} />
 
-                { this.state.visiblelanguage &&
-            <Languages />
+                {this.state.visiblelanguage &&
+                    <Languages />
                 }
-                { this.state.visibleSearch &&
-            <Search />
+                {this.state.visibleSearch &&
+                    <Search />
                 }
-                { this.state.visiblesettings &&
-            <SettingsComponent />
+                {this.state.visiblesettings &&
+                    <SettingsComponent />
                 }
 
 
-                <Body pages = { this.props.filtered } />
+                <Body pages={this.props.filtered} />
 
 
-            <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500 }}>
-                <MenuList selected={this.props.selected} a={this.props.languangeId ? Number(this.props.languangeId) + 1 : 2} data={global.globalJson} from={this.props.from.menuId} />
-            </View>
+                <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500 }}>
+                    <MenuList selected={this.props.selected} a={this.props.languangeId ? Number(this.props.languangeId) + 1 : 2} data={global.globalJson} from={this.props.from.menuId} />
+                </View>
 
-            <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
+                <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
 
             </View>
         );
-}
+    }
 
 }
 

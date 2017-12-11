@@ -21,7 +21,6 @@ class MenuList extends React.PureComponent {
     }
     componentWillMount() {
         // this.setState({menus: this.props.data.menuTrees[this.props.a-1].menuTree});
-        
     }
 
 
@@ -102,11 +101,14 @@ class MenuList extends React.PureComponent {
 const styles = {
     menu1Container: {
         flexDirection: 'row',
+
     },
     mainCont: {
         backgroundColor: 'white',
         paddingBottom: 0,
         position: 'relative',
+        height: '100%',
+        width: '100%'
         //bottom: '7%'
     }
 }

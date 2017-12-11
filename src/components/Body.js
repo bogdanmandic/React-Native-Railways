@@ -56,7 +56,10 @@ class Body extends Component {
 
             <View style={styles.bodyCont}>
 
-                <Swiper loop={false}>
+                <Swiper 
+                    loop={false}
+                    paginationStyle={styles.pagginationStyle}
+                >
                     {this.filterBody()}
                 </Swiper>
 
@@ -71,6 +74,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '100%',
         height: '86%'
+    },
+    pagginationStyle: {
+        bottom: 0,
+        backgroundColor: '#fff'
     }
 });
 

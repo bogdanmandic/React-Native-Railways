@@ -15,7 +15,6 @@ import * as Progress from 'react-native-progress';
 import md5 from 'md5';
 import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
-
 import Orientation from 'react-native-orientation';
 
 
@@ -30,9 +29,9 @@ export default class App extends Component {
     visibleDownloadError: false
   };
 
-  componentDidMount(){
-      Orientation.lockToLandscape();
-    }
+  componentDidMount() {
+      //Orientation.lockToLandscape();
+  }
 
   isLoading() {
     const deviceId = DeviceInfo.getUniqueID();
@@ -40,7 +39,7 @@ export default class App extends Component {
     let fetchedProject = {};
     let server = '';
     let lastChangesOld = '';
-    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId' + deviceId;
+    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId=' + deviceId;
     const pathToProjectJson = dirs.DocumentDir + '/projectJson.json';
 
     let fetchedContent = {};
@@ -113,12 +112,18 @@ export default class App extends Component {
       })
     }
 
-
+    a = () => {
+      return new Promise((resolve, reject) => {
+        let a = require('./codebeautify.json');
+        return resolve(a);
+      })
+    }
 
     contentJsonLogic = () => {
       return new Promise((resolve, reject) => {
         fetch(contentJsonURL)
           .then(res => res.json())
+          //a()
           .then(res => { fetchedContent = res; return Promise.resolve() })
           .then(() => RNFB.fs.exists(pathToContentJson))
           .then(res => !res ? nePostojiContentJson() : postojiContentJson())
@@ -144,12 +149,14 @@ export default class App extends Component {
           .then(res => {
             global.globalJson = JSON.parse(res);
             if (fetchedProject.project.lastChanges == lastChangesOld) {
+              //if(hash(fetchedContent) == hash(global.globalJson)) {
+              global.globalJson
               console.log('usao u if od postojiContentJson()')
               return resolve()
             } else {
               console.log('Else u postoji content JSON')
               global.globalJson = fetchedContent;
-              obrisiStare(global.globalJson, fetchedContent);
+              //obrisiStare(global.globalJson, fetchedContent);
 
               RNFB.config({ path: pathToContentJson }).fetch('GET', contentJsonURL)
                 .then(() => resolve())
@@ -314,6 +321,7 @@ export default class App extends Component {
   }// End of isLoading()
 
   componentWillMount() {
+    Orientation.lockToLandscape();
     this.isLoading();
   }
 
