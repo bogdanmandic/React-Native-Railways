@@ -10,17 +10,42 @@ class MenuList extends React.PureComponent {
         //languangeId: 2,
         menus: this.props.data.menuTrees[1].menuTree, // promeniti lang u dinamicki (ovo je samo english)
         selected: this.props.selected || 0,
-        pages: this.props.data.pages
+        pages: this.props.data.pages,
+        fromObj: {}
     };
 
     componentDidMount() {
         //this.refs._scrollView1.scrollTo({ y: 0, x:  });
         //this.calculateMenu1();
         //this.refs._scrollView1.scrollTo({y:30, x: 30, animated: true});
+        //if (this.props.from)
+            this.chooseSelected(this.state.fromObj);
 
     }
     componentWillMount() {
         // this.setState({menus: this.props.data.menuTrees[this.props.a-1].menuTree});
+        this.setState({
+            fromObj: global.globalJson.menus[1].menu.find(o =>
+                o.menuId == this.props.from
+            )
+        });
+    } 
+
+    chooseSelected(m) {
+        // this.props.from
+
+        if (m.parentId == 0) {
+            this.state.menus.map((cale, i) => {
+                if (cale.menuId == m.menuId) {
+                    console.log(cale.menuId + "=====" + m.menuId);
+                    this.setState({ selected: i })
+                }
+            })
+        }
+        else {
+            let a = global.globalJson.menus[1].menu.find(x => x.menuId == m.parentId);
+            this.chooseSelected(a)
+        }
     }
 
 
@@ -46,7 +71,7 @@ class MenuList extends React.PureComponent {
 
 
     componentDidUpdate() {
-        
+
         this.refs._scrollView2.scrollTo({ y: 0, x: 0, animated: true });
     }
 
@@ -57,7 +82,7 @@ class MenuList extends React.PureComponent {
                 isPressed={this.state.selected == i ? true : false}
                 key={menu.menuId}
                 menu1={menu}
-                
+
             />
         );
     }
