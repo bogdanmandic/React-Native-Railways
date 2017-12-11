@@ -26,11 +26,13 @@ export default class App extends Component {
     isLoading: 1,
     visibleDownload: false,
     indeterminate: true,
-    visibleDownloadError: false
+    visibleDownloadError: false,
+    mbDone = 0,
+    mbTotal = 0
   };
 
   componentDidMount() {
-      //Orientation.lockToLandscape();
+    //Orientation.lockToLandscape();
   }
 
   isLoading() {
@@ -44,7 +46,7 @@ export default class App extends Component {
 
     let fetchedContent = {};
     const pathToContentJson = dirs.DocumentDir + '/contentJson.json';
-    const contentJsonURLReqParametri = '?a=ajax&do=getContent&projectId=3&token=1234567890&deviceId=' + deviceId ;
+    const contentJsonURLReqParametri = '?a=ajax&do=getContent&projectId=3&token=1234567890&deviceId=' + deviceId;
     let contentJsonURL = '';
 
     const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.txt';
@@ -347,11 +349,12 @@ export default class App extends Component {
     } else if (this.state.isLoading) {
       return (
         <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
-         <StatusBar barStyle="dark-content" hidden={true} />
+          <StatusBar barStyle="dark-content" hidden={true} />
           <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1', justifyContent: 'center', }}>
             <Text style={styles.loadTextF}>Loading, please wait...</Text>
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
+            {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} of {this.state.mbTotal} MB.</Text>}
             <Progress.Bar
               style={{ alignSelf: 'center', margin: 10, opacity: this.state.showProgress }}
               indeterminate={this.state.indeterminate}
@@ -365,7 +368,7 @@ export default class App extends Component {
     else if (this.state.isLoading == 'offline') {
       return (
         <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
-         <StatusBar barStyle="dark-content" hidden={true} />
+          <StatusBar barStyle="dark-content" hidden={true} />
           <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1' }}>
             <Text style={styles.loadText}>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
             <Text style={styles.loadText}>Please connect to internet first.</Text>
