@@ -6,6 +6,9 @@ import Swiper from 'react-native-swiper';
 import VB from './VideoBtn';
 import DB from './DocBtn';
 
+import SwiperFlatList from './SwiperFlatList';
+export const { width, height } = Dimensions.get('window');
+
 
 export default class TextImage extends Component {
 
@@ -34,8 +37,8 @@ export default class TextImage extends Component {
   renderPics() {
     return this.state.imagesPath.map((pic, i) => {
       return <View key={i}>
-        <LightBox style={{ width: '100%', height: '100%' }}>
-          <Image style={styles.swiperPic} source={{ uri: pic }} />
+        <LightBox style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+          <Image resizeMode={Image.resizeMode.cover} style={styles.swiperPic} source={{ uri: pic }} />
         </LightBox>
       </View>
     })
@@ -63,10 +66,13 @@ export default class TextImage extends Component {
 
             <View style={styles.contentPic}>
 
-              <ScrollView style={{ width: '100%', height: "100%" }} horizontal={true} showHorizontalScrollIndicator={false} pagingEnabled>
-                {this.renderPics()}
-
-              </ScrollView>
+            <SwiperFlatList
+              showPagination
+              paginationActiveColor={'#007AFF'}
+            >
+              {this.renderPics()}
+            </SwiperFlatList>
+              
               <View style={styles.ButtonContainer}>
                 {this.state.videoPath.length > 0 && <VB videouri={this.state.videoPath[0]} />}
                 {this.state.documentPath.length > 0 && <DB documenturi={this.state.documentPath[0]} />}
@@ -125,8 +131,9 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   swiperPic: {
+    height: 500,
     width: 726.5,
-    height: 600
+    alignSelf: 'center'
   },
   ButtonContainer: {
     justifyContent: 'flex-end',
@@ -136,5 +143,9 @@ const styles = StyleSheet.create({
     bottom: 20,
     right: 20,
     width: '51%',
+  },
+  pagination: {
+    width: 10,
+    height: 10
   }
 });
