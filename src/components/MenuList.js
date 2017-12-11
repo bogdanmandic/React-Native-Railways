@@ -133,7 +133,8 @@ const styles = {
         paddingBottom: 0,
         position: 'relative',
         height: '100%',
-        width: '100%'
+        width: '100%',
+        zIndex: 4
         //bottom: '7%'
     }
 }
