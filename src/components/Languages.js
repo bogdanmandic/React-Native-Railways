@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     langCont: {
         position: 'absolute',
         backgroundColor: '#fff',
-        top: 50,
+        top: '7%',
         height: 75,
         width: '100%',
         zIndex: 3,

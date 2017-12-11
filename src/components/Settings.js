@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     height: '86%',
     flexDirection: 'row',
     position: 'absolute',
-    top: 50,
+    top: '7%',
     zIndex: 3,
   },
   btn_settings: {
