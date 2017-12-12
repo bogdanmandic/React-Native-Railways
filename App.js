@@ -27,8 +27,8 @@ export default class App extends Component {
     visibleDownload: false,
     indeterminate: true,
     visibleDownloadError: false,
-    mbDone = 0,
-    mbTotal = 0
+    total: 0,
+    mbDone: 0
   };
 
   componentDidMount() {
@@ -104,7 +104,7 @@ export default class App extends Component {
       let a = global.projectJson.project.servers.map(server =>
         axios.get(server)
       );
-      return Promise.resolve(a[0]);
+      return Promise.race(a);
     }
 
     checkForFile = () => {
@@ -186,9 +186,8 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
-            console.log(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext);
             console.log('One file downloaded at ', r.path());
-            this.setState(prevState => ({ downloaded: prevState.downloaded + 1 }));
+            this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
             return resolve();
           })
           .catch((err) => { this.setState({ visibleDownloadError: true }); return reject() })
@@ -206,7 +205,7 @@ export default class App extends Component {
             result += Number(element.size);
           });
           result = (result / 1024 / 1024).toFixed(2);
-          this.setState({ visibleDownload: true });
+          this.setState({ visibleDownload: true, total: result });
           return resolve(result);
         }
       })
@@ -273,7 +272,6 @@ export default class App extends Component {
         let a = filesArr.map(file =>
           downloadOne(file)
         );
-        console.log(a);
         this.setState({ downloadedL: a.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))
@@ -354,7 +352,7 @@ export default class App extends Component {
             <Text style={styles.loadTextF}>Loading, please wait...</Text>
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
-            {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} of {this.state.mbTotal} MB.</Text>}
+            {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
             <Progress.Bar
               style={{ alignSelf: 'center', margin: 10, opacity: this.state.showProgress }}
               indeterminate={this.state.indeterminate}
