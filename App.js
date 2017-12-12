@@ -104,7 +104,7 @@ export default class App extends Component {
       let a = global.projectJson.project.servers.map(server =>
         axios.get(server)
       );
-      return Promise.race(a);
+      return Promise.resolve(a[0]);
     }
 
     checkForFile = () => {
