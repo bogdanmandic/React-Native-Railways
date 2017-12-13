@@ -9,13 +9,13 @@ export default class Header extends React.Component {
     this.props.onPressLang();
   };
   openHome = () => {
-    Actions.home()
+    Actions.reset('home')
   };
   openFavorites = () => {
-    Actions.login()
+    Actions.reset('login')
   };
   openMenu = () => {
-    Actions.login()
+    Actions.reset('login')
   };
   openSearch = () => {
     this.props.onPress();

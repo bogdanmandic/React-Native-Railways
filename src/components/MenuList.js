@@ -37,7 +37,7 @@ class MenuList extends React.PureComponent {
         if (m.parentId == 0) {
             this.state.menus.map((cale, i) => {
                 if (cale.menuId == m.menuId) {
-                    console.log(cale.menuId + "=====" + m.menuId);
+                    
                     this.setState({ selected: i })
                 }
             })
@@ -107,7 +107,7 @@ class MenuList extends React.PureComponent {
     }
 
     render() {
-        console.log(this.props.a);
+        
         return (
 
             <View style={styles.mainCont}>
