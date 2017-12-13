@@ -194,7 +194,7 @@ export default class App extends Component {
             let time = t1 - t0;
             let sizeOne = Number(file.size)/1024.0;
             let dlSpeed = sizeOne / time;
-            globa.averageSpeed = 0.005 * dlSpeed + (1 - 0.005) * global.averageSpeed;
+            global.averageSpeed = 0.005 * dlSpeed + (1 - 0.005) * global.averageSpeed;
             return resolve();
           })
           .catch((err) => { this.setState({ visibleDownloadError: true }); return reject() })
