@@ -87,13 +87,11 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: 600,
-    // height: 50,
     backgroundColor: "white",
     borderRadius: 5,
     fontSize: 25,
     color: "black",
     margin: 10,
-    // paddingLeft: 15
   },
   buttonText: {
     fontSize: 65,
@@ -102,11 +100,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   button: {
-    // width: 300,
     backgroundColor: '#4169e1',
-    // borderRadius: 25,
-    // marginVertical: 5,
-    // paddingVertical: 5,
   },
   signupTC: {
     backgroundColor: '#4169e1',
@@ -126,14 +120,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#4169e1',
     borderRadius: 10,
     width: 165,
-    // alignItems: 'center',
   },
     skip: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // width: 200,
     backgroundColor: '#4169e1',
-    // marginBottom: 30
   },
   skipBtn: {
     alignItems: 'center',
