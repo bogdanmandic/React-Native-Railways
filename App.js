@@ -28,7 +28,7 @@ export default class App extends Component {
     indeterminate: true,
     visibleDownloadError: false,
     total: 0,
-    mbDone: 0
+    mbDone: 0,
   };
 
   componentDidMount() {
@@ -51,6 +51,7 @@ export default class App extends Component {
 
     const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.txt';
 
+    
 
     projectJsonLogic = () => {
       return new Promise((resolve, reject) => {
@@ -184,10 +185,16 @@ export default class App extends Component {
 
     downloadOne = (file) => {
       return new Promise((resolve, reject) => {
+        let t0 = Date.now();
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
+            let t1 = Date.now();
             console.log('One file downloaded at ', r.path());
             this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
+            let time = t1 - t0;
+            let sizeOne = Number(file.size)/1024.0;
+            let dlSpeed = sizeOne / time;
+            globa.averageSpeed = 0.005 * dlSpeed + (1 - 0.005) * global.averageSpeed;
             return resolve();
           })
           .catch((err) => { this.setState({ visibleDownloadError: true }); return reject() })
@@ -235,6 +242,7 @@ export default class App extends Component {
               }
             if (res.type == 'wifi')
               downloadSpeed = 23.5 / 8.0;
+              global.averageSpeed = downloadSpeed;
             let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
             Alert.alert(
               'About to download ' + mb + ' MB',
@@ -353,6 +361,7 @@ export default class App extends Component {
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
+            {this.state.visibleDownload && <Text style={styles.loadText}>Remaining time: {((this.state.total - this.state.mbDone) / global.averageSpeed).toFixed(0)} s.</Text>}
             <Progress.Bar
               style={{ alignSelf: 'center', margin: 10, opacity: this.state.showProgress }}
               indeterminate={this.state.indeterminate}
@@ -386,7 +395,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'white',
     fontSize: 30,
-    paddingTop: 80
+    paddingTop: 20
   },
   loadTextF: {
     alignSelf: 'center',
