@@ -7,11 +7,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default class Signup extends React.Component {
 
   goBack() {
-    Actions.pop();
+    Actions.reset('login');
   }
 
   blank() {
-    Actions.home()
+    Actions.reset('home')
   }
 
   render() {

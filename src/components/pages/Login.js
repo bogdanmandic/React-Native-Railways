@@ -11,7 +11,7 @@ export default class Login extends React.Component {
   };
 
   blank() {
-    Actions.home()
+    Actions.reset('home')
   }
 
   render() {

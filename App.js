@@ -104,7 +104,7 @@ export default class App extends Component {
       let a = global.projectJson.project.servers.map(server =>
         axios.get(server)
       );
-      return Promise.race(a);
+      return Promise.resolve(a[0]);
     }
 
     checkForFile = () => {
@@ -317,7 +317,7 @@ export default class App extends Component {
       })
 
 
-
+ 
   }// End of isLoading()
 
   componentWillMount() {
@@ -337,14 +337,14 @@ export default class App extends Component {
 
 
   render() {
-    if (!this.state.isLoading) {
+    if (this.state.isLoading == 0) {
       return (
         <View style={styles.container}>
           <Routes />
         </View>
       );
 
-    } else if (this.state.isLoading) {
+    } else if (this.state.isLoading == 1) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
           <StatusBar barStyle="dark-content" hidden={true} />
@@ -367,7 +367,7 @@ export default class App extends Component {
         </View >
       );
     }
-    else if (this.state.isLoading == 'offline') {
+    else if (this.state.isLoading == -1) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
           <StatusBar barStyle="dark-content" hidden={true} />
