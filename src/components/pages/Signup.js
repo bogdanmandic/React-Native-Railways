@@ -112,20 +112,14 @@ const styles = StyleSheet.create({
   },
   container2: {
     backgroundColor: '#4169e1',
-    // flexGrow: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   inputBox: {
     width: 600,
-    // height: 60,
     backgroundColor: "white",
     margin: 5,
     fontSize: 25,
     color: "black",
     borderRadius: 5,
-    // marginVertical: 10,
-    // paddingLeft: 15
   },
   buttonText: {
     fontSize: 45,
@@ -135,12 +129,7 @@ const styles = StyleSheet.create({
   
   },
   button: {
-    // width: 300,
     backgroundColor: '#4169e1',
-    //marginTop: 20,
-    // borderRadius: 25,
-    // marginVertical: 5,
-    // paddingVertical: 5,
   },
   signupTC: {
     backgroundColor: '#4169e1',
@@ -158,11 +147,7 @@ const styles = StyleSheet.create({
   },
  
   skip: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    //width: 300,
     backgroundColor: '#4169e1',
-    // marginBottom: 30
   },
   skipBtn: {
     alignItems: 'center',
