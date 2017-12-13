@@ -18,15 +18,9 @@ export default class Login extends React.Component {
     return (
 
       <View style={styles.container}>
-       <StatusBar barStyle="dark-content" hidden={true} />
+        <StatusBar barStyle="dark-content" hidden={true} />
 
-        <KeyboardAwareScrollView
-          style={{ backgroundColor: '#4c69a5' }}
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          contentContainerStyle={styles.container2}
-          scrollEnabled={false}
-        >
-
+        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'column' }}>
           <TextInput style={styles.inputBox}
             underlineColorAndroid='rgba(0,0,0,0)'
             placeholder="E-Mail"
@@ -45,23 +39,26 @@ export default class Login extends React.Component {
             returnKeyType="go"
             ref={(input) => this.password = input}
           />
+        </View>
 
-          <View style={styles.login}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>LOGIN</Text>
-            </TouchableOpacity>
-          </View>
+        <View style={styles.login}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>LOGIN</Text>
+          </TouchableOpacity>
+        </View>
 
+        <View style={{ flex: 2, alignItems: 'center', justifyContent: 'flex-start', flexDirection: 'column' }}>
           <View style={styles.signupTC}>
-            <TouchableOpacity onPress={this.signup} style={styles.signupBtn}><Text style={styles.register}>Signup</Text></TouchableOpacity>
+             <Text onPress={this.signup} style={styles.register}>Signup </Text>
             <Text style={styles.tekst}>a new account</Text>
           </View>
 
           <View style={styles.skip}>
             <TouchableOpacity style={styles.skipBtn} onPress={this.blank} ><Text style={styles.tekst}>Skip</Text></TouchableOpacity>
           </View>
+        </View>
 
-        </KeyboardAwareScrollView>
+
 
       </View>
     )
@@ -71,9 +68,16 @@ export default class Login extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
+    width: '100%',
     backgroundColor: '#4169e1',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  login: {
+    flex:1.5,
+    alignItems:'center',
+    justifyContent: 'center'
   },
   container2: {
     backgroundColor: '#4169e1',
@@ -83,13 +87,11 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: 600,
-    height: 80,
     backgroundColor: "white",
     borderRadius: 5,
     fontSize: 25,
     color: "black",
-    marginVertical: 10,
-    paddingLeft: 15
+    margin: 10,
   },
   buttonText: {
     fontSize: 65,
@@ -98,51 +100,37 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   button: {
-    width: 300,
     backgroundColor: '#4169e1',
-    borderRadius: 25,
-    marginVertical: 5,
-    paddingVertical: 5,
   },
   signupTC: {
     backgroundColor: '#4169e1',
-    alignItems: 'center',
+    marginBottom: 5,
     flexDirection: 'row',
   },
   tekst: {
-    fontSize: 45,
+    fontSize: 30,
     color: "white",
   },
   register: {
     color: "white",
-    fontSize: 45,
+    fontSize: 30,
     fontWeight: '900'
   },
   signupBtn: {
     backgroundColor: '#4169e1',
     borderRadius: 10,
     width: 165,
-    alignItems: 'center',
   },
-  skip: {
-    paddingTop: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 500,
+    skip: {
     backgroundColor: '#4169e1',
-    marginBottom: 80,
   },
   skipBtn: {
     alignItems: 'center',
-    width: 450,
+    width: 150,
     borderLeftWidth: 3,
     borderWidth: 3,
     borderColor: 'white',
     padding: 5
   },
-  login: {
-    paddingVertical: 55,
-
-  }
 
 })
