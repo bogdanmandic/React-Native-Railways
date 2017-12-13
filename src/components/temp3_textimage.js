@@ -38,7 +38,7 @@ export default class TextImage extends Component {
     return this.state.imagesPath.map((pic, i) => {
       return <View key={i}>
         <LightBox style={{ width: '100%', height: '100%'}}>
-          <Image resizeMode={Image.resizeMode.cover} style={styles.swiperPic} source={{ uri: pic }} />
+          <Image style={styles.swiperPic} source={{ uri: pic }} />
         </LightBox>
       </View>
     })
@@ -52,7 +52,7 @@ export default class TextImage extends Component {
         <View style={styles.body}>
 
           <View>
-            <Text style={[styles.headingText, styles.headingMain]}>{this.props.title}</Text>
+            <Text style={[styles.headingText, styles.headingMain]}>{this.props.templateTitle}</Text>
             <Text style={styles.headingText}>{this.props.subtitle}</Text>
           </View>
 

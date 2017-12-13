@@ -325,7 +325,7 @@ export default class App extends Component {
       })
 
 
-
+ 
   }// End of isLoading()
 
   componentWillMount() {
@@ -345,38 +345,39 @@ export default class App extends Component {
 
 
   render() {
-    if (!this.state.isLoading) {
+    if (this.state.isLoading == 0) {
       return (
         <View style={styles.container}>
           <Routes />
         </View>
       );
 
-    } else if (this.state.isLoading) {
+    } else if (this.state.isLoading == 1) {
       return (
-        <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
           <StatusBar barStyle="dark-content" hidden={true} />
-          <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1', justifyContent: 'center', }}>
+          <View style={{ flex: 2, alignItems: 'center', justifyContent: 'flex-end', backgroundColor: '#4169e1'}}>
             <Text style={styles.loadTextF}>Loading, please wait...</Text>
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Remaining time: {((this.state.total - this.state.mbDone) / global.averageSpeed).toFixed(0)} s.</Text>}
             <Progress.Bar
-              style={{ alignSelf: 'center', margin: 10, opacity: this.state.showProgress }}
+              style={{ margin: 10, opacity: this.state.showProgress }}
               indeterminate={this.state.indeterminate}
               progress={this.calcProgress()}
               color='#fff'
             />
+
           </View>
-        </View>
+        </View >
       );
     }
-    else if (this.state.isLoading == 'offline') {
+    else if (this.state.isLoading == -1) {
       return (
-        <View style={{ alignSelf: 'center', paddingTop: 120, width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: "100%", height: "100%", backgroundColor: '#4169e1' }}>
           <StatusBar barStyle="dark-content" hidden={true} />
-          <View style={{ alignSelf: 'center', width: 800, height: 500, backgroundColor: '#4169e1' }}>
+          <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', backgroundColor: '#4169e1' }}>
             <Text style={styles.loadText}>You are starting app for first time and you are offline. We need to show some content, and for this we need to download it.</Text>
             <Text style={styles.loadText}>Please connect to internet first.</Text>
           </View>
@@ -390,9 +391,11 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
+    width: '100%'
   },
   loadText: {
-    alignSelf: 'center',
+
     color: 'white',
     fontSize: 30,
     paddingTop: 20
@@ -401,6 +404,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: 'white',
     fontSize: 30,
-    paddingBottom: 30
+    paddingBottom: 20
   }
 });
