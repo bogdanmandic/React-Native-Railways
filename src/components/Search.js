@@ -124,11 +124,12 @@ class Search extends Component {
 
     searchDoPages = (item, where) => {
         return new Promise((resolve, reject) => {
+            itemL = item.toLowerCase();
             let foundPages = where.filter(x => {
                 if (x.text != null)
-                    return x.text.includes(item) || x.subtitle.includes(item) || x.title.includes(item);
+                    return x.text.toLowerCase().includes(itemL) || x.subtitle.toLowerCase().includes(itemL) || x.title.toLowerCase().includes(itemL);
                 else if (x.text == null)
-                    return x.subtitle.includes(item) || x.title.includes(item);
+                    return x.subtitle.toLowerCase().includes(itemL) || x.title.toLowerCase().includes(itemL);
             })
             resolve(foundPages)
         })
