@@ -188,7 +188,6 @@ export default class App extends Component {
         let t0 = Date.now();
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
-            let t1 = Date.now();
             console.log('One file downloaded at ', r.path());
             let t1 = Date.now();
             this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
@@ -206,7 +205,6 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         let result = 0;
         if (filesArr.length <= 0) {
-
           reject('Array is empty')
         } else {
           filesArr.forEach(element => {
