@@ -24,6 +24,7 @@ class HBF extends Component {
     };
 
     render() {
+        console.log('render hbf');
         return (
 
             <View>

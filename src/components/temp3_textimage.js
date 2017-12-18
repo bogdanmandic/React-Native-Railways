@@ -16,7 +16,14 @@ export default class TextImage extends Component {
     videoPath: [],
     documentPath: [],
     imagesPath: [],
-    startSwiper: false
+    startSwiper: false,
+    dimensions: undefined
+  }
+
+  onLayout(event) {
+    if(this.state.dimensions) return
+    let { width, height } = event.nativeEvent.layout;
+    this.setState({dimensions: {width,height}});
   }
 
   componentWillMount() {
@@ -39,17 +46,19 @@ export default class TextImage extends Component {
     //setTimeout(() => {this.setState({ startSwiper: true })}, 500);
   }
 
-  renderPics() {
+  renderPics(w, h) {
     return this.state.imagesPath.map((pic, i) => {
+      
       return <View key={i}>
         <LightBox style={{ width: '100%', height: '100%' }}>
-          <Image resizeMethod='resize' style={styles.swiperPic} source={{ uri: pic }} />
+          <Image resizeMethod='resize' style={[styles.swiperPic, {width: w, height: h}]} source={{ uri: pic }} />
         </LightBox>
       </View>
     })
   }
 
   render() {
+    console.log('render');
     return (
 
       <View style={styles.mainView}>
@@ -69,14 +78,14 @@ export default class TextImage extends Component {
               </ScrollView>
             </View>
 
-            <View style={styles.contentPic}>
+            <View style={styles.contentPic} onLayout={(event) => this.onLayout(event) }>
 
               <SwiperFlatList
                 showPagination
                 paginationActiveColor={'#007AFF'}
-                removeClippedSubviews={true}
+                
               >
-                {this.renderPics()}
+                {this.state.dimensions && this.renderPics(this.state.dimensions.width, this.state.dimensions.height)}
               </SwiperFlatList>
 
               <View style={styles.ButtonContainer}>
@@ -137,9 +146,8 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   swiperPic: {
-    height: Dimensions.get('window').height*0.55,
-    width:Dimensions.get('window').width*0.55,
     alignSelf: 'center',
+    resizeMode: 'cover'
   },
   ButtonContainer: {
     justifyContent: 'flex-end',
