@@ -51,7 +51,7 @@ export default class App extends Component {
 
     const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.txt';
 
-    
+
 
     projectJsonLogic = () => {
       return new Promise((resolve, reject) => {
@@ -192,7 +192,7 @@ export default class App extends Component {
             let t1 = Date.now();
             this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
             let time = t1 - t0;
-            let sizeOne = Number(file.size)/1024.0;
+            let sizeOne = Number(file.size) / 1024.0;
             let dlSpeed = sizeOne / time;
             global.averageSpeed = 0.001 * dlSpeed + (1 - 0.001) * global.averageSpeed;
             return resolve();
@@ -360,7 +360,9 @@ export default class App extends Component {
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
-            {this.state.visibleDownload && <Text style={styles.loadText}>Remaining time: {(((this.state.total - this.state.mbDone) / global.averageSpeed).toFixed(0)/60)} seconds.</Text>}
+            {this.state.visibleDownload &&
+              <Text style={styles.loadText}>
+                Remaining time: {(((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) != 0 ? (((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) + ' min' : (((this.state.total - this.state.mbDone) / global.averageSpeed)).toFixed(0)+' seconds'}</Text>}
 
           </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#4169e1' }} >
