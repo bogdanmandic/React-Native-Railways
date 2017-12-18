@@ -328,7 +328,7 @@ export default class App extends Component {
   }// End of isLoading()
 
   componentWillMount() {
-    Orientation.lockToLandscape();
+    //Orientation.lockToLandscape();
     this.isLoading();
   }
 
