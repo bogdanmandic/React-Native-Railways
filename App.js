@@ -328,7 +328,7 @@ export default class App extends Component {
   }// End of isLoading()
 
   componentWillMount() {
-    //Orientation.lockToLandscape();
+    Orientation.lockToLandscape();
     this.isLoading();
   }
 
@@ -360,7 +360,7 @@ export default class App extends Component {
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
-            {this.state.visibleDownload && <Text style={styles.loadText}>Remaining time: {((this.state.total - this.state.mbDone) / global.averageSpeed).toFixed(0)} seconds.</Text>}
+            {this.state.visibleDownload && <Text style={styles.loadText}>Remaining time: {(((this.state.total - this.state.mbDone) / global.averageSpeed).toFixed(0)/60)} seconds.</Text>}
 
           </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#4169e1' }} >
