@@ -137,10 +137,9 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   swiperPic: {
-    height: 500,
-    width: 726.5,
+    height: Dimensions.get('window').height*0.55,
+    width:Dimensions.get('window').width*0.55,
     alignSelf: 'center',
-    resizeMode: 'cover'
   },
   ButtonContainer: {
     justifyContent: 'flex-end',
