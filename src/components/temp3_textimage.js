@@ -58,7 +58,7 @@ export default class TextImage extends Component {
   }
 
   render() {
-    console.log('render');
+ 
     return (
 
       <View style={styles.mainView}>
