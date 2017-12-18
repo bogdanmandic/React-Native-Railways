@@ -50,6 +50,7 @@ export default class TextImage extends Component {
   }
 
   render() {
+    console.log('render temp3');
     return (
 
       <View style={styles.mainView}>
