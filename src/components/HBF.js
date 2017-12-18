@@ -23,10 +23,6 @@ class HBF extends Component {
         Alert.alert('Otvorili ste meni za izbor video snimaka.')
     };
 
-    componentWillMount() {
-        Orientation.lockToLandscape();
-    }
-
     render() {
         return (
 
