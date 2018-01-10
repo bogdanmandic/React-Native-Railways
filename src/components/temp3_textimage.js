@@ -15,7 +15,15 @@ export default class TextImage extends Component {
   state = {
     videoPath: [],
     documentPath: [],
-    imagesPath: []
+    imagesPath: [],
+    startSwiper: false,
+    dimensions: undefined
+  }
+
+  onLayout(event) {
+    if(this.state.dimensions) return
+    let { width, height } = event.nativeEvent.layout;
+    this.setState({dimensions: {width,height}});
   }
 
   componentWillMount() {
@@ -34,17 +42,23 @@ export default class TextImage extends Component {
     this.setState({ videoPath: videos, documentPath: documents, imagesPath: images });
   }
 
-  renderPics() {
+  componentDidMount() {
+    //setTimeout(() => {this.setState({ startSwiper: true })}, 500);
+  }
+
+  renderPics(w, h) {
     return this.state.imagesPath.map((pic, i) => {
+      
       return <View key={i}>
-        <LightBox style={{ width: '100%', height: '100%'}}>
-          <Image style={styles.swiperPic} source={{ uri: pic }} />
+        <LightBox style={{ width: '100%', height: '100%' }}>
+          <Image resizeMethod='resize' style={[styles.swiperPic, {width: w, height: h}]} source={{ uri: pic }} />
         </LightBox>
       </View>
     })
   }
 
   render() {
+ 
     return (
 
       <View style={styles.mainView}>
@@ -64,15 +78,16 @@ export default class TextImage extends Component {
               </ScrollView>
             </View>
 
-            <View style={styles.contentPic}>
+            <View style={styles.contentPic} onLayout={(event) => this.onLayout(event) }>
 
-            <SwiperFlatList
-              showPagination
-              paginationActiveColor={'#007AFF'}
-            >
-              {this.renderPics()}
-            </SwiperFlatList>
-              
+              <SwiperFlatList
+                showPagination
+                paginationActiveColor={'#007AFF'}
+                
+              >
+                {this.state.dimensions && this.renderPics(this.state.dimensions.width, this.state.dimensions.height)}
+              </SwiperFlatList>
+
               <View style={styles.ButtonContainer}>
                 {this.state.videoPath.length > 0 && <VB videouri={this.state.videoPath[0]} />}
                 {this.state.documentPath.length > 0 && <DB documenturi={this.state.documentPath[0]} />}
@@ -131,9 +146,8 @@ const styles = StyleSheet.create({
     marginLeft: 30,
   },
   swiperPic: {
-    height: 500,
-    width: 726.5,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    resizeMode: 'cover'
   },
   ButtonContainer: {
     justifyContent: 'flex-end',

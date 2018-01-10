@@ -59,6 +59,7 @@ class Body extends Component {
                 <Swiper 
                     loop={false}
                     paginationStyle={styles.pagginationStyle}
+                    removeClippedSubviews={true}
                 >
                     {this.filterBody()}
                 </Swiper>

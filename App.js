@@ -28,7 +28,7 @@ export default class App extends Component {
     indeterminate: true,
     visibleDownloadError: false,
     total: 0,
-    mbDone: 0
+    mbDone: 0,
   };
 
   componentDidMount() {
@@ -50,6 +50,7 @@ export default class App extends Component {
     let contentJsonURL = '';
 
     const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.txt';
+
 
 
     projectJsonLogic = () => {
@@ -191,7 +192,7 @@ export default class App extends Component {
             let t1 = Date.now();
             this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
             let time = t1 - t0;
-            let sizeOne = Number(file.size)/1024.0;
+            let sizeOne = Number(file.size) / 1024.0;
             let dlSpeed = sizeOne / time;
             global.averageSpeed = 0.001 * dlSpeed + (1 - 0.001) * global.averageSpeed;
             return resolve();
@@ -204,7 +205,6 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         let result = 0;
         if (filesArr.length <= 0) {
-
           reject('Array is empty')
         } else {
           filesArr.forEach(element => {
@@ -360,7 +360,9 @@ export default class App extends Component {
             {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
-            {this.state.visibleDownload && <Text style={styles.loadText}>Remaining time: {((this.state.total - this.state.mbDone) / global.averageSpeed).toFixed(0)} seconds.</Text>}
+            {this.state.visibleDownload &&
+              <Text style={styles.loadText}>
+                Remaining time: {(((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) != 0 ? (((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) + ' min' : (((this.state.total - this.state.mbDone) / global.averageSpeed)).toFixed(0)+' seconds'}</Text>}
 
           </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#4169e1' }} >
@@ -401,6 +403,7 @@ const styles = StyleSheet.create({
 
     color: 'white',
     fontSize: 30,
+    paddingTop: 20
   },
   loadTextF: {
     alignSelf: 'center',
