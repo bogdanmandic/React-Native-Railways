@@ -42,6 +42,7 @@ export default class App extends Component {
     let server = '';
     let lastChangesOld = '';
     const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId=' + deviceId;
+    //const projectJsonURL = 'http://www.fotoberza.rs/cmstest/?a=ajax&do=getProject&projectId=3&token=1234567890&deviceId=' + deviceId;
     const pathToProjectJson = dirs.DocumentDir + '/projectJson.json';
 
     let fetchedContent = {};
@@ -49,8 +50,8 @@ export default class App extends Component {
     const contentJsonURLReqParametri = '?a=ajax&do=getContent&projectId=3&token=1234567890&deviceId=' + deviceId;
     let contentJsonURL = '';
 
-    const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.txt';
-
+    const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.json';
+    let checkedFiles = { failedDownloads: [] };
 
 
     projectJsonLogic = () => {
@@ -111,7 +112,22 @@ export default class App extends Component {
     checkForFile = () => {
       return new Promise((resolve, reject) => {
         RNFB.fs.exists(pathToCheckedFiles)
-          .then(res => !res ? resolve() : reject('Postoji checkedFiles.'))
+          .then(res => {
+             if(!res) {
+              return resolve([]);
+             } else {
+               RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
+               .then(data => {
+                  if(JSON.parse(data).failedDownloads.length > 0) {
+                    console.log('Files missing on server: ');
+                    JSON.parse(data).failedDownloads.forEach(f => console.log(f));
+                    return resolve(JSON.parse(data).failedDownloads);
+                  } else {
+                    return reject('Postoji checkedFiles.')
+                  }
+               })
+            }
+          })
       })
     }
 
@@ -151,15 +167,16 @@ export default class App extends Component {
         RNFB.fs.readFile(pathToContentJson, 'utf8')
           .then(res => {
             global.globalJson = JSON.parse(res);
+            
             if (fetchedProject.project.lastChanges == lastChangesOld) {
               //if(hash(fetchedContent) == hash(global.globalJson)) {
-              global.globalJson
+              //global.globalJson
               console.log('usao u if od postojiContentJson()')
               return resolve()
             } else {
               console.log('Else u postoji content JSON')
+              obrisiStare(global.globalJson, fetchedContent);
               global.globalJson = fetchedContent;
-              //obrisiStare(global.globalJson, fetchedContent);
 
               RNFB.config({ path: pathToContentJson }).fetch('GET', contentJsonURL)
                 .then(() => resolve())
@@ -188,7 +205,8 @@ export default class App extends Component {
         let t0 = Date.now();
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
-            console.log('One file downloaded at ', r.path());
+            if(r.info().status == 200) {
+            console.log('One file downloaded at ', r.path() + ', with status code: ' + r.info().status);
             let t1 = Date.now();
             this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
             let time = t1 - t0;
@@ -196,8 +214,14 @@ export default class App extends Component {
             let dlSpeed = sizeOne / time;
             global.averageSpeed = 0.001 * dlSpeed + (1 - 0.001) * global.averageSpeed;
             return resolve();
+            } else {
+              console.log('Fajl ne postoji: ' + file.fileId);
+              checkedFiles.failedDownloads.push(file);
+              return resolve();
+            }
+
           })
-          .catch((err) => { this.setState({ visibleDownloadError: true }); return reject() })
+          .catch((err) => { /*this.setState({ visibleDownloadError: true });*/ return resolve() })
       })
     }
 
@@ -253,10 +277,11 @@ export default class App extends Component {
       })
     }
 
-    checkHashFiles = () => {
+    checkHashFiles = (pocetni) => {
       console.log('usao u hash files()');
       return new Promise((resolve, reject) => {
-        let downloadStage = [];
+        let downloadStage = pocetni;
+        checkedFiles.failedDownloads = [];
         let a = global.globalJson.files.map(file =>
           RNFB.fs.exists(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext)
             .then(res => {
@@ -282,7 +307,7 @@ export default class App extends Component {
         this.setState({ downloadedL: a.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))
-          .then(() => RNFB.fs.writeFile(pathToCheckedFiles, 'true', 'utf8'))
+          .then(() => RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8'))
           .then(() => resolve())
           .catch(err => console.log('Greska kod downloadFIles(): ' + err))
       })
@@ -292,7 +317,7 @@ export default class App extends Component {
       projectJsonLogic()
         .then(() => contentJsonLogic())
         .then(() => checkForFile())
-        .then(() => checkHashFiles())
+        .then((a) => checkHashFiles(a))
         .then((niz) => calculateSize(niz)
           .then((data) => alertForDownload(data))
           .then(() => downloadFiles(niz))
@@ -357,7 +382,7 @@ export default class App extends Component {
           <StatusBar barStyle="dark-content" hidden={true} />
           <View style={{ flex: 2, alignItems: 'center', justifyContent: 'flex-end', backgroundColor: '#4169e1' }}>
             <Text style={styles.loadTextF}>Loading, please wait...</Text>
-            {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. Please restart the application if you see the bar below stuck.</Text>}
+            {this.state.visibleDownloadError && <Text style={styles.loadText}>There seems to be corrupted download. {'\n'}Please restart the application if you see the bar below stuck.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.downloaded} of {this.state.downloadedL} files.</Text>}
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
             {this.state.visibleDownload &&
