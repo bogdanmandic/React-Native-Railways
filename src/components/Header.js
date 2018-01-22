@@ -26,9 +26,16 @@ export default class Header extends React.Component {
   openSettings = () => {
     this.props.onPressSettings();
   };
+  syncFiles = () => {
+    //uradi sync fajlova
+    Alert.alert('Oli ga sinkovat?')
+  };
   componentDidMount() {
     StatusBar.setHidden(true);
   }
+
+
+
   render() {
 
     return (
@@ -48,6 +55,7 @@ export default class Header extends React.Component {
             <TouchableWithoutFeedback onPress={this.openMenu}><Image style={styles.ico} source={require('./ico/32/menu.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openSearch}><Image style={styles.ico} source={require('./ico/32/search.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openFolder}><Image style={styles.ico} source={require('./ico/32/folder.png')} /></TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={this.syncFiles}><Image style={styles.ico} source={require('./ico/32/sync.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openSettings}><Image style={styles.ico} source={require('./ico/32/settings.png')} /></TouchableWithoutFeedback>
 
           </View>
