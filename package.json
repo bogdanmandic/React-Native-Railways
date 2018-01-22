@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "base-64": "^0.1.0",
     "md5": "^2.2.1",
     "object-hash": "^1.2.0",
     "react": "16.0.0",

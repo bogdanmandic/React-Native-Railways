@@ -16,6 +16,7 @@ import md5 from 'md5';
 import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
 import Orientation from 'react-native-orientation';
+import base64 from 'base-64';
 
 
 export default class App extends Component {
@@ -224,31 +225,60 @@ export default class App extends Component {
         }
         NetInfo.getConnectionInfo()
           .then((res) => {
-            let cellularType = res.effectiveType;
-            let warningString = res.type == 'cellular' ? 'Warning, you are on cellular ' + cellularType + ' network, this download could be charged.' : '';
-            let downloadSpeed = 0;
-            if (res.type == 'cellular')
-              switch (res.effectiveType) {
-                case '2g':
-                  downloadSpeed = 0.04 / 8.0;
-                  break;
-                case '3g':
-                  downloadSpeed = 6.04 / 8.0;
-                  break;
-                case '4g':
-                  downloadSpeed = 18.4 / 8.0;
-                  break;
-              }
-            if (res.type == 'wifi')
-              downloadSpeed = 23.5 / 8.0;
-            global.averageSpeed = downloadSpeed;
-            let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
-            Alert.alert(
-              'About to download ' + mb + ' MB',
-              '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
-              [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+            console.log('get connetion blok')
+            const speedBenchmarkFile = server + projectJson.project.speedBenchmarkFile;
+            console.log(speedBenchmarkFile);
+            // path to speed
+            const pathToSpeedBenchmarkFile = dirs.PictureDir + 'benchmark666.jpg';
+            const timeBeforeDownload = Date.now();
+            // const nekiTest = 'http://ipv4.download.thinkbroadband.com/5MB.zip'
+            RNFB.config({ path: pathToSpeedBenchmarkFile }).fetch('GET', speedBenchmarkFile)
+            // RNFB.config({ path: pathToSpeedBenchmarkFile }).fetch('GET', nekiTest)
+              .then((benchmarkFile) => {
+                const timeAfterDownload = Date.now();
+                const benchmarkTime = timeAfterDownload - timeBeforeDownload; // time to dl file
+                // console.log('skinuo benchmark file' + ' ' + benchmarkTime);
+                RNFB.fs.readFile(benchmarkFile.path(), 'base64')
+                  .then(data => {
+                    const decodedData = base64.decode(data);
+                    const Bytes = decodedData.length; // file size in Kbytes
+                    // console.log('B: ' + Bytes);
+                    const Bits = Bytes * 8;
+                    // console.log('b: ' + Bits);
+                    const KBitsPerSecond = Bits / benchmarkTime;
+                    // console.log('Kb/s: ' + KBitsPerSecond);
+                    const MBitsPerSecond = KBitsPerSecond / 1024;
+                    // console.log('Mb/s: ' + MBitsPerSecond);
 
-            )
+                    let cellularType = res.effectiveType;
+                    let warningString = res.type == 'cellular' ? 'Warning, you are on cellular ' + cellularType + ' network, this download could be charged.' : '';
+                    let downloadSpeed = MBitsPerSecond;
+                    // if (res.type == 'cellular')
+                    //   switch (res.effectiveType) {
+                    //     case '2g':
+                    //       downloadSpeed = 0.04 / 8.0;
+                    //       break;
+                    //     case '3g':
+                    //       downloadSpeed = 6.04 / 8.0;
+                    //       break;
+                    //     case '4g':
+                    //       downloadSpeed = 18.4 / 8.0;
+                    //       break;
+                    //   }
+                    // if (res.type == 'wifi')
+                    //   downloadSpeed = 23.5 / 8.0;
+                    global.averageSpeed = downloadSpeed;
+                    let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
+                    Alert.alert(
+                      'About to download ' + mb + ' MB',
+                      '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
+                      [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+
+                    )
+
+                  })
+              });
+
           })
       })
     }
@@ -362,7 +392,7 @@ export default class App extends Component {
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
             {this.state.visibleDownload &&
               <Text style={styles.loadText}>
-                Remaining time: {(((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) != 0 ? (((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) + ' min' : (((this.state.total - this.state.mbDone) / global.averageSpeed)).toFixed(0)+' seconds'}</Text>}
+                Remaining time: {(((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) != 0 ? (((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) + ' min' : (((this.state.total - this.state.mbDone) / global.averageSpeed)).toFixed(0) + ' seconds'}</Text>}
 
           </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#4169e1' }} >
