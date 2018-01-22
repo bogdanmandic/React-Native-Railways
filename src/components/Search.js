@@ -24,7 +24,7 @@ class Search extends Component {
      * Searches for Menu Object by MenuId
      */
     searchMenu(menuId) {
-        return global.globalJson.menus[1].menu.find(element =>
+        return global.globalJson.menus[global.language].menu.find(element =>
             menuId == element.menuId
         )
     }

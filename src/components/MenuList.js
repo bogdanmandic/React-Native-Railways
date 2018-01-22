@@ -8,7 +8,7 @@ class MenuList extends React.PureComponent {
 
     state = {
         //languangeId: 2,
-        menus: this.props.data.menuTrees[1].menuTree, // promeniti lang u dinamicki (ovo je samo english)
+        menus: this.props.data.menuTrees[global.language].menuTree, // promeniti lang u dinamicki (ovo je samo english)
         selected: this.props.selected || 0,
         pages: this.props.data.pages,
         fromObj: {}
@@ -25,7 +25,7 @@ class MenuList extends React.PureComponent {
     componentWillMount() {
         // this.setState({menus: this.props.data.menuTrees[this.props.a-1].menuTree});
         this.setState({
-            fromObj: global.globalJson.menus[1].menu.find(o =>
+            fromObj: global.globalJson.menus[global.language].menu.find(o =>
                 o.menuId == this.props.from
             )
         });
@@ -33,8 +33,9 @@ class MenuList extends React.PureComponent {
 
     chooseSelected(m) {
         // this.props.from
-
+        
         if (m.parentId == 0) {
+            
             this.state.menus.map((cale, i) => {
                 if (cale.menuId == m.menuId) {
                     
@@ -43,7 +44,8 @@ class MenuList extends React.PureComponent {
             })
         }
         else {
-            let a = global.globalJson.menus[1].menu.find(x => x.menuId == m.parentId);
+            
+            let a = global.globalJson.menus[global.language].menu.find(x => x.menuId == m.parentId);
             this.chooseSelected(a)
         }
     }

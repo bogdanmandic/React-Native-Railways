@@ -12,6 +12,7 @@ export default class Home extends Component {
   componentWillMount() {
 
     let a = this.findStartPage();
+    global.language = Number(a[0].languageId)-1;
     let b = this.findMenu(a[0].menuId);
     this.setState({ menu: b, filtered: a });
 
@@ -39,7 +40,7 @@ export default class Home extends Component {
   }
 
   findMenu(menuIdS) {
-    let menus = global.globalJson.menuTrees[1].menuTree;
+    let menus = global.globalJson.menuTrees[global.language].menuTree;
     let found = {};
 
     for (let i = 0; i < menus.length; i++) {

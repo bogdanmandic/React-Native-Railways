@@ -24,7 +24,7 @@ class HBF extends Component {
     };
 
     render() {
-        console.log('render hbf');
+    
         return (
 
             <View>
@@ -48,7 +48,7 @@ class HBF extends Component {
 
 
                 <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500 }}>
-                    <MenuList selected={this.props.selected} a={this.props.languangeId ? Number(this.props.languangeId) + 1 : 2} data={global.globalJson} from={this.props.from.menuId} />
+                    <MenuList selected={this.props.selected} data={global.globalJson} from={this.props.from.menuId} />
                 </View>
 
                 <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />

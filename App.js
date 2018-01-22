@@ -52,7 +52,7 @@ export default class App extends Component {
     let contentJsonURL = '';
 
     const pathToCheckedFiles = dirs.DocumentDir + '/checkedFiles.json';
-    let checkedFiles = { failedDownloads: [] };
+    let checkedFiles = { failedDownloads: [], allDownloaded: false };
 
 
     projectJsonLogic = () => {
@@ -120,10 +120,11 @@ export default class App extends Component {
                RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
                .then(data => {
                   if(JSON.parse(data).failedDownloads.length > 0) {
+                    checkedFiles = JSON.parse(data);
                     console.log('Files missing on server: ');
                     JSON.parse(data).failedDownloads.forEach(f => console.log(f));
                     return resolve(JSON.parse(data).failedDownloads);
-                  } else {
+                  } else if(JSON.parse(data).allDownloaded) {
                     return reject('Postoji checkedFiles.')
                   }
                })
@@ -218,6 +219,7 @@ export default class App extends Component {
             } else {
               console.log('Fajl ne postoji: ' + file.fileId);
               checkedFiles.failedDownloads.push(file);
+              RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
               return resolve();
             }
 
@@ -337,6 +339,7 @@ export default class App extends Component {
         this.setState({ downloadedL: a.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))
+          .then(() => checkedFiles.allDownloaded = true)
           .then(() => RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8'))
           .then(() => resolve())
           .catch(err => console.log('Greska kod downloadFIles(): ' + err))

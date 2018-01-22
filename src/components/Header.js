@@ -28,12 +28,26 @@ export default class Header extends React.Component {
   };
   syncFiles = () => {
     //uradi sync fajlova
-    Alert.alert('Oli ga sinkovat?')
+    this.syncApp();
   };
   componentDidMount() {
     StatusBar.setHidden(true);
   }
 
+
+  syncApp() {
+    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
+    fetch(projectJsonURL)
+      .then(res => res.json())
+      .then(res => {
+        if(res.project.lastChanges == global.projectJson.project.lastChanges)
+        Alert.alert('Project JSON je isti!')
+        else {
+          Alert.alert('Project JSON nije isti!');
+          //Actions.reset('app');
+        }
+      })
+  }
 
 
   render() {

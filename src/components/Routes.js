@@ -6,6 +6,7 @@ import Home from './Home';
 import HBF from './HBF';
 import VideoView from './Video';
 import DocumentView from './Doc';
+import App from '../../App';
 
 
 export default class Routes extends React.Component {
@@ -16,6 +17,7 @@ export default class Routes extends React.Component {
 
       <Router>
         <Stack key="root" hideNavBar={true}>
+          <Scene key="app" component={App} title='App' />
           <Scene key="login" component={Login} title="Login" initial={true} />
           <Scene key="signup" component={Signup} title="Register" />
           <Scene key="home" component={Home} title="Home" />
