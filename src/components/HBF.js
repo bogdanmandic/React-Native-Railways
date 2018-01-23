@@ -8,6 +8,7 @@ import SettingsComponent from './Settings';
 import Languages from './Languages';
 import Search from './Search';
 import Orientation from 'react-native-orientation';
+import SyncTimer from './SyncTimer';
 
 
 class HBF extends Component {
@@ -33,6 +34,7 @@ class HBF extends Component {
                 onPress={() => { this.state.visibleSearch ? this.setState({ visibleSearch: false }) : this.setState({ visibleSearch: true, visibleMenu: false, visiblelanguage: false, visiblesettings: false  }) }} 
                 onPressSettings={() => { this.state.visiblesettings ? this.setState({ visiblesettings: false }) : this.setState({ visiblesettings: true, visibleMenu: false, visibleSearch: false, visiblelanguage: false  }) }} />
 
+                <SyncTimer />
                 {this.state.visiblelanguage &&
                     <Languages />
                 }
@@ -52,7 +54,6 @@ class HBF extends Component {
                 </View>
 
                 <Footer onPress={() => { this.state.visibleMenu ? this.setState({ visibleMenu: false }) : this.setState({ visibleMenu: true }); }} />
-
             </View>
         );
     }
