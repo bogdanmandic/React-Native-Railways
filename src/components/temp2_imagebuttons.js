@@ -8,7 +8,8 @@ export default class ImageButtons extends Component {
 
     state = {
         videoPath: [],
-        documentPath: []
+        documentPath: [],
+        image: ''
     };
 
     componentWillMount() {
@@ -20,7 +21,14 @@ export default class ImageButtons extends Component {
             return file.substring(file.length - 3, file.length) == 'pdf'
         })
 
-        this.setState({ videoPath: videos, documentPath: documents });
+        let images = this.props.files.find(file => {
+            return file.substring(file.length - 3, file.length) == 'jpg' 
+            || file.substring(file.length - 3, file.length) == 'png' 
+            || file.substring(file.length - 4, file.length) == 'jpeg'
+        })
+
+
+        this.setState({ videoPath: videos, documentPath: documents, image: images });
     }
     componentDidMount() {
         StatusBar.setHidden(true);
@@ -42,7 +50,7 @@ export default class ImageButtons extends Component {
                         <View style={styles.contentPic}>
 
                             <LightBox style={{width: '100%', height: '100%' }}>
-                              <Image resizeMethod='resize' style={{width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.props.files.find(file => file.substring(file.length - 3, file.length) == 'jpg' || file.substring(file.length - 3, file.length) == 'png') }}/>
+                              <Image resizeMethod='resize' style={{width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.state.image }}/>
                             </LightBox>
                        
                             <View style={styles.ButtonContainer}>

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.ocetnik.timer.BackgroundTimerPackage;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.brentvatne.react.ReactVideoPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new BackgroundTimerPackage(),
+            new ReactNativeRestartPackage(),
             new OrientationPackage(),
             new RNDeviceInfo(),
             new ReactVideoPackage(),

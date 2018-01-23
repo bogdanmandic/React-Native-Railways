@@ -5,12 +5,19 @@ import { Actions } from 'react-native-router-flux';
 
 class Languages extends Component {
 
+
     onclickLanguageText = (lang) => {
+        let startPage;
+        switch(lang.language) {
+            case 'English': startPage = '333'; break;
+            case 'German': startPage = '640'; break;
+            default: startPage = '333'; break;
+        }
         Alert.alert(
             'Change language to:',
-            '' + lang,
+            '' + lang.language,
             [
-                { text: 'Change language', onPress: () => console.log('aaaa') },
+                { text: 'Change language', onPress: () => Actions.reset('home', {startPage: startPage}) },
                 { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             ],
             { cancelable: false }
@@ -20,7 +27,7 @@ class Languages extends Component {
     openLanguage = () => {
         return global.projectJson.languages.map((object, index) =>
             <View key={index}>
-                <TouchableOpacity style={{ margin: 10, height: 37, width:150, backgroundColor: '#dddddd', alignItems: 'center'}} onPress={() => this.onclickLanguageText(object.language)}>
+                <TouchableOpacity style={{ margin: 10, height: 37, width:150, backgroundColor: '#dddddd', alignItems: 'center'}} onPress={() => this.onclickLanguageText(object)}>
                     <Text style={{ fontSize: 25, color: '#595959' }} >{object.language}</Text>
                 </TouchableOpacity>
             </View>

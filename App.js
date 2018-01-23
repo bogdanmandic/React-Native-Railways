@@ -268,31 +268,13 @@ export default class App extends Component {
                   .then(data => {
                     const decodedData = base64.decode(data);
                     const Bytes = decodedData.length; // file size in Kbytes
-                    // console.log('B: ' + Bytes);
                     const Bits = Bytes * 8;
-                    // console.log('b: ' + Bits);
                     const KBitsPerSecond = Bits / benchmarkTime;
-                    // console.log('Kb/s: ' + KBitsPerSecond);
                     const MBitsPerSecond = KBitsPerSecond / 1024;
-                    // console.log('Mb/s: ' + MBitsPerSecond);
 
                     let cellularType = res.effectiveType;
                     let warningString = res.type == 'cellular' ? 'Warning, you are on cellular ' + cellularType + ' network, this download could be charged.' : '';
                     let downloadSpeed = MBitsPerSecond;
-                    // if (res.type == 'cellular')
-                    //   switch (res.effectiveType) {
-                    //     case '2g':
-                    //       downloadSpeed = 0.04 / 8.0;
-                    //       break;
-                    //     case '3g':
-                    //       downloadSpeed = 6.04 / 8.0;
-                    //       break;
-                    //     case '4g':
-                    //       downloadSpeed = 18.4 / 8.0;
-                    //       break;
-                    //   }
-                    // if (res.type == 'wifi')
-                    //   downloadSpeed = 23.5 / 8.0;
                     global.averageSpeed = downloadSpeed;
                     let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
                     Alert.alert(
@@ -303,8 +285,33 @@ export default class App extends Component {
                     )
 
                   })
+              })
+              .catch(error => {
+                    let cellularType = res.effectiveType;
+                    let warningString = res.type == 'cellular' ? 'Warning, you are on cellular ' + cellularType + ' network, this download could be charged.' : '';
+                    let downloadSpeed = 0;
+                    if (res.type == 'cellular')
+                      switch (res.effectiveType) {
+                        case '2g':
+                          downloadSpeed = 0.04 / 8.0;
+                          break;
+                        case '3g':
+                          downloadSpeed = 6.04 / 8.0;
+                          break;
+                        case '4g':
+                          downloadSpeed = 18.4 / 8.0;
+                          break;
+                      }
+                    if (res.type == 'wifi')
+                      downloadSpeed = 23.5 / 8.0;
+                    global.averageSpeed = downloadSpeed;
+                    let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
+                    Alert.alert(
+                      'About to download ' + mb + ' MB',
+                      '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
+                      [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+                    )
               });
-
           })
       })
     }
