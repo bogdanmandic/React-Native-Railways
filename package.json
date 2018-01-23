@@ -21,6 +21,7 @@
     "react-native-pdf": "^2.0.7",
     "react-native-progress": "^3.4.0",
     "react-native-render-html": "^3.5.2",
+    "react-native-restart": "0.0.6",
     "react-native-router-flux": "^4.0.0-beta.24",
     "react-native-swiper": "^1.5.13",
     "react-native-swiper-flatlist": "^1.0.2",

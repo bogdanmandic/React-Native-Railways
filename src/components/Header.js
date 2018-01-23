@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import HTML from 'react-native-render-html';
+import RNRestart from 'react-native-restart';
 
 export default class Header extends React.Component {
 
@@ -41,9 +42,9 @@ export default class Header extends React.Component {
       .then(res => res.json())
       .then(res => {
         if(res.project.lastChanges == global.projectJson.project.lastChanges)
-        Alert.alert('Project JSON je isti!', 'dza bu', [{text: 'OK', onPress: () => { Actions.reset('app'); }}])
+        Alert.alert('App is already up to date!', '', [{ text: 'OK', onPress: () => {  } }])
         else {
-          Alert.alert('Project JSON nije isti!');
+          Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{text: 'OK', onPress: () => { RNRestart.Restart(); }}, {text: 'Cancel', onPress: () => {  }}]);
           //Actions.reset('app');
         }
       })

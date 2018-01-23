@@ -356,9 +356,7 @@ export default class App extends Component {
           .then(() => downloadFiles(niz))
         )
         .catch(err => console.log('Catch od glavnog bloka od checkHashFiles: ' + err))
-        .then(() => { console.log('PRE SETSTATE: ' + this.state.isLoading) })
         .then(() => this.setState({ isLoading: 0 }))
-        .then(() => { console.log('POST SETSTATE: ' + this.state.isLoading) })
     }
 
     akoNemaNeta = () => {
