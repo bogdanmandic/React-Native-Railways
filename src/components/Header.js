@@ -41,7 +41,7 @@ export default class Header extends React.Component {
       .then(res => res.json())
       .then(res => {
         if(res.project.lastChanges == global.projectJson.project.lastChanges)
-        Alert.alert('Project JSON je isti!')
+        Alert.alert('Project JSON je isti!', 'dza bu', [{text: 'OK', onPress: () => { Actions.reset('app'); }}])
         else {
           Alert.alert('Project JSON nije isti!');
           //Actions.reset('app');
