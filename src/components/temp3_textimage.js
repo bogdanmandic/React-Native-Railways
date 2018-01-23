@@ -21,9 +21,9 @@ export default class TextImage extends Component {
   }
 
   onLayout(event) {
-    if(this.state.dimensions) return
+    if (this.state.dimensions) return
     let { width, height } = event.nativeEvent.layout;
-    this.setState({dimensions: {width,height}});
+    this.setState({ dimensions: { width, height } });
   }
 
   componentWillMount() {
@@ -36,7 +36,9 @@ export default class TextImage extends Component {
     })
 
     let images = this.props.files.filter(file => {
-      return file.substring(file.length - 3, file.length) == 'jpg' || file.substring(file.length - 3, file.length) == 'png'
+      return file.substring(file.length - 3, file.length) == 'jpg'
+        || file.substring(file.length - 3, file.length) == 'png'
+        || file.substring(file.length - 4, file.length) == 'jpeg'
     })
 
     this.setState({ videoPath: videos, documentPath: documents, imagesPath: images });
@@ -48,17 +50,17 @@ export default class TextImage extends Component {
 
   renderPics(w, h) {
     return this.state.imagesPath.map((pic, i) => {
-      
+
       return <View key={i}>
         <LightBox style={{ width: '100%', height: '100%' }}>
-          <Image resizeMethod='resize' style={[styles.swiperPic, {width: w, height: h}]} source={{ uri: pic }} />
+          <Image resizeMethod='resize' style={[styles.swiperPic, { width: w, height: h }]} source={{ uri: pic }} />
         </LightBox>
       </View>
     })
   }
 
   render() {
- 
+
     return (
 
       <View style={styles.mainView}>
@@ -78,12 +80,12 @@ export default class TextImage extends Component {
               </ScrollView>
             </View>
 
-            <View style={styles.contentPic} onLayout={(event) => this.onLayout(event) }>
+            <View style={styles.contentPic} onLayout={(event) => this.onLayout(event)}>
 
               <SwiperFlatList
                 showPagination
                 paginationActiveColor={'#007AFF'}
-                
+
               >
                 {this.state.dimensions && this.renderPics(this.state.dimensions.width, this.state.dimensions.height)}
               </SwiperFlatList>
